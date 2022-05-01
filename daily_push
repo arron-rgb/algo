@@ -1,0 +1,8 @@
+#!/bin/bash
+push(){
+    current_date=$(date +%F-%T)
+    git add .
+    git commit -m "$current_date"
+}
+
+push
