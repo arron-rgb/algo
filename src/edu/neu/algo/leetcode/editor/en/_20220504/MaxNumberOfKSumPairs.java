@@ -1,5 +1,7 @@
 package edu.neu.algo.leetcode.editor.en._20220504;
 
+import java.util.Arrays;
+
 public class MaxNumberOfKSumPairs {
 
   // You are given an integer array nums and an integer k.
@@ -41,12 +43,31 @@ public class MaxNumberOfKSumPairs {
 
   public static void main(String[] args) {
     Solution solution = new MaxNumberOfKSumPairs().new Solution();
+    int x = (int)10e9;
+    long v = (long)10e9;
+    System.out.println(x);
+    System.out.println(v);
   }
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int maxOperations(int[] nums, int k) {
-      return 0;
+      Arrays.sort(nums);
+      int left = 0, right = nums.length - 1;
+      int count = 0;
+      while (left < right) {
+        long tmp = nums[left] + nums[right];
+        if (tmp == k) {
+          count++;
+          left++;
+          right--;
+        } else if (tmp < k) {
+          left++;
+        } else {
+          right--;
+        }
+      }
+      return count;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
