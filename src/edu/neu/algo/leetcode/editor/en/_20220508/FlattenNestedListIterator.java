@@ -77,7 +77,7 @@ public class FlattenNestedListIterator {
   }
 
   public static void main(String[] args) {
-    NestedIterator solution = new FlattenNestedListIterator().new NestedIterator();
+    NestedIterator solution = new FlattenNestedListIterator().new NestedIterator(null);
   }
 
   // leetcode submit region begin(Prohibit modification and deletion)
