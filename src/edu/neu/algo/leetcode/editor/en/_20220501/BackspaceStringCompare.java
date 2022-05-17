@@ -54,15 +54,12 @@ public class BackspaceStringCompare {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public boolean backspaceCompare(String s, String t) {
-      StringBuilder deque = new StringBuilder();
-      for (char c : s.toCharArray()) {
-        if (c == '#' && deque.length() > 0) {
-          deque.deleteCharAt(deque.length() - 1);
-        } else if (c == '#' && deque.length() == 0) {
-        } else {
-          deque.append(c);
-        }
-      }
+      StringBuilder deque = getResult(s);
+      StringBuilder d2 = getResult(t);
+      return d2.toString().equals(deque.toString());
+    }
+
+    private StringBuilder getResult(String t) {
       StringBuilder d2 = new StringBuilder();
       for (char c : t.toCharArray()) {
         if (c == '#' && d2.length() > 0) {
@@ -72,7 +69,7 @@ public class BackspaceStringCompare {
           d2.append(c);
         }
       }
-      return d2.toString().equals(deque.toString());
+      return d2;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
