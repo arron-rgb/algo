@@ -1,7 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 /**
  * @author arronshentu
@@ -9,78 +6,139 @@ import java.util.Set;
 public class Weekly {
   public static void main(String[] args) {
     Weekly weekly = new Weekly();
-    boolean b = weekly.hasValidPath(new char[][] {{'(', '(', '('}, {')', '(', ')'}, {'(', '(', ')'}, {'(', '(', ')'}});
-    System.out.println(b);
+    // int b = weekly.minimumLines(new int[][] {{1, 3}, {2, 3}, {3, 3}});
+    // System.out.println(b);
   }
 
-  int m;
-  int n;
-
-  Set<String> fault = new HashSet<>();
-
-  public boolean hasValidPath(char[][] grid) {
-    m = grid.length;
-    n = grid[0].length;
-    StringBuilder stringBuilder = new StringBuilder();
-    return dfs(grid, 0, 0, stringBuilder);
-  }
-
-  boolean dfs(char[][] grid, int i, int j, StringBuilder stringBuilder) {
-    if (i < 0 || j < 0 || i > m - 1 || j > n - 1) {
-      return false;
+  public int maximumBags(int[] capacity, int[] rocks, int additionalRocks) {
+    int n = capacity.length;
+    for (int i = 0; i < n; i++) {
+      capacity[i] = capacity[i] - rocks[i];
     }
-    if (i == m - 1 && j == n - 1) {
-      StringBuilder builder = stringBuilder.append(grid[i][j]);
-      boolean rest = isValid(builder.toString());
-      builder.deleteCharAt(builder.length() - 1);
-      return rest;
-    }
-    stringBuilder.append(grid[i][j]);
-    boolean down = dfs(grid, i + 1, j, stringBuilder);
-    boolean right = dfs(grid, i, j + 1, stringBuilder);
-    stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-    return down || right;
-  }
-
-  boolean isValid(String tmp) {
-    if (fault.contains(tmp)) {
-      return false;
-    }
-    Deque<Character> deque = new ArrayDeque<>();
-    for (char c : tmp.toCharArray()) {
-      if (deque.isEmpty() && c == ')') {
-        return false;
-      }
-      if (!deque.isEmpty() && deque.peekLast() == '(' && c == ')') {
-        deque.poll();
+    Arrays.sort(capacity);
+    int count = 0;
+    // int tmp = 0;
+    for (int i = 0; i < n && additionalRocks > 0; i++) {
+      if (additionalRocks >= capacity[i]) {
+        additionalRocks -= capacity[i];
+        count++;
       } else {
-        deque.offerLast(c);
+        break;
       }
     }
-    if (!deque.isEmpty()) {
-      fault.add(tmp);
-      return false;
-    }
-    return true;
+    return count;
   }
 
-  long mod = (long)(10e9 + 7);
-  int[] values = new int[] {1, 2, 4, 7};
-  // 7,9 可以取到第四个位置
+  public int minimumLines(int[][] a) {
+    int n = a.length;
+    int ans = n - 1;
+    Arrays.sort(a, (x, y) -> {
+      if (x[0] != y[0]) {
+        return x[0] - y[0];
+      }
+      return (x[1] - y[1]);
+    });
 
-  public int countTexts(String pressedKeys) {
-    long res = 0;
-    int i = 0;
-    while (i < pressedKeys.length()) {
-      char cur = pressedKeys.charAt(i);
+    for (int i = 1; i < n - 1; i++) {
+      if (ccw(a[i - 1], a[i], a[i + 1]) == 0) {
+        ans--;
+      }
+    }
+    return ans;
+  }
 
-      while (i < pressedKeys.length() - 1 && cur == pressedKeys.charAt(i + 1)) {
-        i++;
+  /**
+   * 向量积 共线为0
+   *
+   * @param a
+   * @param b
+   * @param t
+   * @return
+   */
+  public int ccw(int[] a, int[] b, int[] t) {
+    return Long.signum((long)(t[0] - a[0]) * (b[1] - a[1]) - (long)(b[0] - a[0]) * (t[1] - a[1]));
+  }
+
+  class Solution {
+    public int totalStrength(int[] a) {
+      final int mod = 1000000007;
+      int n = a.length;
+
+      long[] cum = new long[n + 1];
+      for (int i = 0; i < n; i++) {
+        cum[i + 1] = cum[i] + a[i];
+        cum[i + 1] %= mod;
       }
 
-      i++;
+      long[] cum2 = new long[n + 2];
+      for (int i = 0; i <= n; i++) {
+        cum2[i + 1] = cum2[i] + cum[i];
+        cum2[i + 1] %= mod;
+      }
+
+      long[] sum = {0L, 0L};
+      ContourStack cs = new ContourStack(false, (l, r, v) -> {
+        sum[0] += (cum2[r] - cum2[l] + mod) % mod * v;
+        sum[0] %= mod;
+        sum[1] += (r - l) * v;
+        sum[1] %= mod;
+      });
+      long ans = 0;
+      int p = 0;
+      for (int v : a) {
+        cs.add(v);
+        p++;
+        ans += sum[1] * cum[p] - sum[0];
+        ans %= mod;
+      }
+      if (ans < 0) {
+        ans += mod;
+      }
+      return (int)ans;
     }
 
-    return (int)(res % mod);
+    public class ContourStack {
+      public int p, sp;
+      public int[] stack;
+      public long[] a;
+      public boolean max;
+      public WRangeConsumer cons;
+
+      @FunctionalInterface
+      public interface WRangeConsumer {
+        void f(int l, int r, long v);
+      }
+
+      public ContourStack(boolean max, WRangeConsumer cons) {
+        this.max = max;
+        this.cons = cons;
+        a = new long[1];
+        stack = new int[1];
+        p = sp = 0;
+      }
+
+      public void add(long v) {
+        while (sp > 0 && (max ? a[sp - 1] <= v : a[sp - 1] >= v)) {
+          cons.f(sp - 2 >= 0 ? stack[sp - 2] + 1 : 0, stack[sp - 1] + 1, -a[sp - 1]);
+          sp--;
+        }
+
+        if (sp == stack.length) {
+          stack = Arrays.copyOf(stack, sp * 2);
+          a = Arrays.copyOf(a, sp * 2);
+        }
+        stack[sp] = p;
+        a[sp++] = v;
+        cons.f(sp - 2 >= 0 ? stack[sp - 2] + 1 : 0, p + 1, v);
+        p++;
+      }
+
+      @Override
+      public String toString() {
+        return "MaxStack{" + "p=" + p + ", sp=" + sp + ", a=" + Arrays.toString(Arrays.copyOf(a, sp)) + ", stack="
+          + Arrays.toString(Arrays.copyOf(stack, sp)) + '}';
+      }
+    }
   }
+
 }

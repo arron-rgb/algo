@@ -1,5 +1,7 @@
 package edu.neu.algo.leetcode.editor.en._20220516;
 
+import java.util.Arrays;
+
 public class CheckIfAllTheIntegersInARangeAreCovered {
 
   // You are given a 2D integer array ranges and two integers left and right. Each
@@ -44,6 +46,7 @@ public class CheckIfAllTheIntegersInARangeAreCovered {
 
   public static void main(String[] args) {
     Solution solution = new CheckIfAllTheIntegersInARangeAreCovered().new Solution();
+    solution.isCovered(new int[][] {{1, 2}, {3, 5}, {7, 9}}, 2, 5);
   }
 
   // leetcode submit region begin(Prohibit modification and deletion)
@@ -54,6 +57,7 @@ public class CheckIfAllTheIntegersInARangeAreCovered {
         ++diff[range[0]];
         --diff[range[1] + 1];
       }
+      System.out.println(Arrays.toString(diff));
       int curr = 0;
       for (int i = 1; i <= 50; ++i) {
         curr += diff[i];
