@@ -5,22 +5,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import edu.neu.base.TreeNode;
-
 public class Purity {
   static String path = "/Users/arronshentu/Project/21FALL/algo/src/submit.txt";
+  static String output = "/Users/arronshentu/Project/21FALL/algo/src/format.txt";
   static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
   static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMdd");
 
   public static void main(String[] args) throws IOException {
     Purity purity = new Purity();
-    TreeNode root = new TreeNode(1);
-    root.left = new TreeNode(2);
-    root.right = new TreeNode(3);
-    root.left.right = new TreeNode(4);
-    root.right.right = new TreeNode(5);
 
-    // solve();
+    solve();
   }
 
   private static void solve() throws IOException {
@@ -28,8 +22,8 @@ public class Purity {
     String content = new String(bytes);
     Set<String> problems = new HashSet<>();
     String[] lines = content.split("\n");
+    lines = Arrays.copyOfRange(lines, 1, lines.length);
     Map<String, String> problemDay = new HashMap<>();
-
     TreeMap<String, String[]> daily = new TreeMap<>();
     for (String line : lines) {
       line = line.substring(0, line.length() - 1);
@@ -58,31 +52,17 @@ public class Purity {
       daily.put(singleDay[0], copy);
     }
 
+    StringBuffer stringBuffer = new StringBuffer();
+
     daily.forEach((k, v) -> {
       String s = Arrays.toString(v);
+      s = s.substring(2, s.length() - 1);
       s = s.replaceAll("\\[ ", "[");
       s = s.replaceAll(", {2}", ", ");
-      System.out.println(k + ": " + s);
+      stringBuffer.append(k).append(": ").append(s).append("\n");
     });
+    Files.writeString(Paths.get(output), stringBuffer.toString());
 
-    Purity purity = new Purity();
-    String reformat = purity.reformat("test.email+alex@leetcode.com");
-    System.out.println(reformat);
-  }
-
-  String reformat(String email) {
-    StringBuilder stringBuilder = new StringBuilder();
-    String[] strings = email.split("@");
-    // test.email+alex@leetcode.com
-    int index = strings[0].indexOf('+');
-    if (index != -1) {
-      strings[0] = strings[0].substring(0, index);
-
-    }
-    stringBuilder.append(strings[0].replaceAll("\\.", ""));
-    stringBuilder.append("@");
-    stringBuilder.append(strings[1]);
-    return stringBuilder.toString();
   }
 
   // public static final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
