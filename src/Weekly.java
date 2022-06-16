@@ -1,8 +1,5 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author arronshentu
@@ -10,20 +7,19 @@ import java.util.List;
 public class Weekly {
   public static void main(String[] args) throws IOException {
     Weekly weekly = new Weekly();
-
   }
 
-  public int[][] merge(int[][] intervals) {
-    List<int[]> res = new ArrayList<>();
-    for (int[] interval : intervals) {
-      int left = interval[0], right = interval[1];
-      if (res.size() == 0 || res.get(res.size() - 1)[1] < left) {
-        res.add(new int[] {left, right});
-      } else {
-        res.get(res.size() - 1)[1] = Math.max(res.get(res.size() - 1)[1], right);
+  public void duplicateZeros(int[] arr) {
+    List<Integer> list = new ArrayList<>();
+    for (int i : arr) {
+      list.add(i);
+      if (i == 0) {
+        list.add(i);
       }
     }
-    return res.toArray(new int[0][]);
+    System.out.println(list);
+    arr = list.stream().limit(arr.length).mapToInt(t -> t).toArray();
+    System.out.println(Arrays.toString(arr));
   }
 
   public int longestSubarray(int[] nums, int limit) {

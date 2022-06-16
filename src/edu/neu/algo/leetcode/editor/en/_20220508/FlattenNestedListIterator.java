@@ -1,6 +1,5 @@
 package edu.neu.algo.leetcode.editor.en._20220508;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -101,29 +100,31 @@ public class FlattenNestedListIterator {
     Iterator<Integer> iterator;
 
     public NestedIterator(List<NestedInteger> nestedList) {
-      this.list = new ArrayList<>();
       dfs(nestedList);
       this.iterator = this.list.iterator();
     }
 
-    void dfs(List<NestedInteger> nestedList) {
-      for (NestedInteger integer : nestedList) {
-        if (integer.isInteger()) {
-          list.add(integer.getInteger());
+    void dfs(List<NestedInteger> list) {
+      if (list == null || list.isEmpty()) {
+        return;
+      }
+      for (NestedInteger nestedInteger : list) {
+        if (nestedInteger.isInteger()) {
+          this.list.add(nestedInteger.getInteger());
         } else {
-          dfs(integer.getList());
+          dfs(nestedInteger.getList());
         }
       }
     }
 
     @Override
     public Integer next() {
-      return this.iterator.next();
+      return iterator.next();
     }
 
     @Override
     public boolean hasNext() {
-      return this.iterator.hasNext();
+      return iterator.hasNext();
     }
   }
 
