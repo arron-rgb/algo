@@ -78,7 +78,7 @@ public class TwoFurthestHousesWithDifferentColors {
         int color = colors[i];
         map.computeIfAbsent(color, (k) -> new ArrayList<>()).add(i);
       }
-      List<List<Integer>> collect = map.values().stream().toList();
+      List<List<Integer>> collect = new ArrayList<>(map.values());
       int max = -1;
       for (int i = 0; i < collect.size(); i++) {
         for (int j = 0; j < collect.size(); j++) {
