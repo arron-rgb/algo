@@ -44,6 +44,7 @@ public class InputUtil {
   }
 
   private static String process(String s, String prefix, int x) {
+    s = s.trim();
     if (s.startsWith(prefix)) {
       return s.substring(x, s.length() - x).trim();
     }
