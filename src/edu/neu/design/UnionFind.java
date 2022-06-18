@@ -1,3 +1,5 @@
+package edu.neu.design;
+
 import java.util.Arrays;
 
 /**
