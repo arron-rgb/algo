@@ -1,10 +1,9 @@
 package edu.neu.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import edu.neu.base.ListNode;
+import edu.neu.base.TreeNode;
 
 /**
  * @author arronshentu
@@ -30,6 +29,9 @@ public class InputUtil {
       }
       if ("int[].class".equals(type)) {
         return stringToArray(testcase);
+      }
+      if ("TreeNode.class".equals(type)) {
+        return stringToTree(testcase);
       }
     }
     return null;
@@ -66,6 +68,45 @@ public class InputUtil {
       res.add(stringToArray(s1));
     }
     return res.toArray(new int[0][]);
+  }
+
+  public static TreeNode stringToTree(String s) {
+    s = process(s, "[", 1);
+    String[] parts = s.split(",");
+    String item = parts[0];
+    TreeNode root = new TreeNode(Integer.parseInt(item));
+    // 1 1; 2 3; 3 1+2+4;
+    Queue<TreeNode> nodeQueue = new LinkedList<>();
+    nodeQueue.add(root);
+    int index = 1;
+    while (!nodeQueue.isEmpty()) {
+      TreeNode node = nodeQueue.remove();
+
+      if (index == parts.length) {
+        break;
+      }
+
+      item = parts[index++];
+      item = item.trim();
+      if (!"null".equals(item)) {
+        int leftNumber = Integer.parseInt(item);
+        node.left = new TreeNode(leftNumber);
+        nodeQueue.add(node.left);
+      }
+
+      if (index == parts.length) {
+        break;
+      }
+
+      item = parts[index++];
+      item = item.trim();
+      if (!"null".equals(item)) {
+        int rightNumber = Integer.parseInt(item);
+        node.right = new TreeNode(rightNumber);
+        nodeQueue.add(node.right);
+      }
+    }
+    return root;
   }
 
   public static ListNode stringToList(String s) {
