@@ -1,5 +1,7 @@
 package edu.neu.algo.leetcode.editor.en._20220621;
 
+import java.util.Arrays;
+
 import edu.neu.util.InputUtil;
 
 public class MinimumTimeToMakeRopeColorful {
@@ -82,7 +84,17 @@ public class MinimumTimeToMakeRopeColorful {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int minCost(String colors, int[] neededTime) {
-      return 0;
+      int cost = 0;
+      int total = Arrays.stream(neededTime).sum();
+      for (int i = 0; i < colors.length(); i++) {
+        int max = neededTime[i];
+        while (i + 1 < colors.length() && colors.charAt(i) == colors.charAt(i + 1)) {
+          max = Math.max(max, neededTime[i + 1]);
+          i++;
+        }
+        cost += max;
+      }
+      return total - cost;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
