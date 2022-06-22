@@ -6,9 +6,9 @@ public class Main {
     // Solution solution = main.new Solution();
     // int abcabcbb = main.lengthOfLongestSubstring("abcabcbb");
     // System.out.println(abcabcbb);
-    List<String> strs =
-      Arrays.asList("cat", "cats", "catsdogcats", "dog", "dogcatsdog", "hippopotamuses", "rat", "ratcatdogcat");
-    main.findAllConcatenatedWordsInADict(strs.toArray(new String[0]));
+    // List<String> strs =
+    // Arrays.asList("cat", "cats", "catsdogcats", "dog", "dogcatsdog", "hippopotamuses", "rat", "ratcatdogcat");
+    // main.findAllConcatenatedWordsInADict(strs.toArray(new String[0]));
   }
 
   class Trie {

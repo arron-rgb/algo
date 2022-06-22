@@ -19,6 +19,14 @@ public class ListNode {
   }
 
   public void print() {
+    System.out.println(this);
+  }
+
+  @Override
+  public String toString() {
+    if (hasCycle()) {
+      return "List has cycle";
+    }
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(val);
     ListNode index = next;
@@ -26,6 +34,18 @@ public class ListNode {
       stringBuilder.append(" -> ").append(index.val);
       index = index.next;
     }
-    System.out.println(stringBuilder);
+    return stringBuilder.toString();
+  }
+
+  private boolean hasCycle() {
+    ListNode fast = this, slow = this;
+    while (fast != null && fast.next != null) {
+      fast = fast.next.next;
+      slow = slow.next;
+      if (slow == fast) {
+        return true;
+      }
+    }
+    return false;
   }
 }

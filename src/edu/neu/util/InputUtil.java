@@ -33,6 +33,12 @@ public class InputUtil {
       if ("TreeNode.class".equals(type)) {
         return stringToTree(testcase);
       }
+      if ("int.class".equals(type)) {
+        return Integer.parseInt(testcase);
+      }
+      if ("String.class".equals(type)) {
+        return testcase.replaceAll("\"", "");
+      }
     }
     return null;
   }
