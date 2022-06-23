@@ -1,6 +1,7 @@
 package edu.neu.util;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import edu.neu.base.ListNode;
 import edu.neu.base.TreeNode;
@@ -9,16 +10,6 @@ import edu.neu.base.TreeNode;
  * @author arronshentu
  */
 public class InputUtil {
-
-  public static void main(String[] args) {
-    // int[][] ints = stringToArrays("[[1,2]]");
-    // System.out.println(Arrays.deepToString(ints));
-    // ListNode listNode = stringToList("[1,2,3]");
-    // listNode.print();
-    String[] param = param("[ListNode, ListNode]");
-    System.out.println(Arrays.toString(param));
-  }
-
   public static Object get(String testcase, Object type) {
     if (type instanceof String) {
       if ("ListNode.class".equals(type)) {
@@ -38,6 +29,15 @@ public class InputUtil {
       }
       if ("String.class".equals(type)) {
         return testcase.replaceAll("\"", "");
+      }
+      if ("list<list<int>>.class".equals(type)) {
+        return stringToInt2dList(testcase);
+      }
+      if ("list<int>.class".equals(type)) {
+        return stringToIntegerList(testcase);
+      }
+      if ("String[].class".equals(type)) {
+        return stringToStringArray(testcase);
       }
     }
     return null;
@@ -63,6 +63,12 @@ public class InputUtil {
     s = process(s, "[", 1);
     String[] split = s.split(",");
     return Arrays.stream(split).mapToInt(Integer::parseInt).toArray();
+  }
+
+  public static String[] stringToStringArray(String s) {
+    s = process(s, "[", 1);
+    String[] split = s.split(",");
+    return Arrays.stream(split).map(t -> t.replaceAll("\"", "")).toList().toArray(new String[0]);
   }
 
   public static int[][] stringToArrays(String s) {
@@ -126,5 +132,19 @@ public class InputUtil {
       index = index.next;
     }
     return res.next;
+  }
+
+  public static List<Integer> stringToIntegerList(String s) {
+    int[] array = stringToArray(s);
+    return Arrays.stream(array).boxed().collect(Collectors.toList());
+  }
+
+  public static List<List<Integer>> stringToInt2dList(String s) {
+    int[][] arrays = stringToArrays(s);
+    List<List<Integer>> list = new ArrayList<>(arrays.length);
+    for (int[] array : arrays) {
+      list.add(Arrays.stream(array).boxed().collect(Collectors.toList()));
+    }
+    return list;
   }
 }
