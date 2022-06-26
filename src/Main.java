@@ -9,6 +9,44 @@ public class Main {
     // List<String> strs =
     // Arrays.asList("cat", "cats", "catsdogcats", "dog", "dogcatsdog", "hippopotamuses", "rat", "ratcatdogcat");
     // main.findAllConcatenatedWordsInADict(strs.toArray(new String[0]));
+    // String[] a = new String[] {"-7", "1", "2", "300", "15"};
+    // Arrays.sort(a);
+    // System.out.println(Arrays.toString(a));
+    System.out.println(main.countHousePlacements(2));
+    System.out.println(main.countHousePlacements(3));
+    System.out.println(main.countHousePlacements(4));
+    System.out.println(main.countHousePlacements(5));
+    System.out.println(main.countHousePlacements(1000));
+  }
+
+  public int maximumsSplicedArray(int[] nums1, int[] nums2) {
+    return Math.max(solve(nums1, nums2), solve(nums2, nums1));
+  }
+
+  private int solve(int[] nums1, int[] nums2) {
+    int sum = Arrays.stream(nums1).sum();
+    int replaceSum = 0, res = 0;
+    for (int i = 0; i < nums1.length; i++) {
+      replaceSum = Math.max(0, replaceSum - nums1[i] + nums2[i]);
+      res = Math.max(res, sum + replaceSum);
+    }
+    return res;
+  }
+
+  public int countHousePlacements(int n) {
+    if (n == 1) {
+      return 4;
+    }
+    final int mod = 1000000007;
+    long pre = 2;
+    long cur = 3;
+    long tmp = cur;
+    for (int i = 3; i <= n; i++) {
+      tmp = (pre + cur) % mod;
+      pre = cur;
+      cur = tmp;
+    }
+    return (int)(tmp * tmp % mod);
   }
 
   class Trie {
