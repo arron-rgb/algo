@@ -87,7 +87,7 @@ public class CombinationSumIV {
             dp[i] += dp[i - coin];
           }
         }
-//        System.out.println(Arrays.toString(dp));
+        System.out.println(Arrays.toString(dp));
       }
       return dp[amount];
     }
