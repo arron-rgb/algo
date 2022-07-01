@@ -12,6 +12,7 @@ import edu.neu.base.TreeNode;
 public class InputUtil {
   public static Object get(String testcase, Object type) {
     if (type instanceof String) {
+      testcase = testcase.trim();
       if ("ListNode.class".equals(type)) {
         return stringToList(testcase);
       }

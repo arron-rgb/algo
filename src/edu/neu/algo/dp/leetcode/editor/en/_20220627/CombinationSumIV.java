@@ -1,7 +1,5 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220627;
 
-import java.util.Arrays;
-
 import edu.neu.util.InputUtil;
 
 public class CombinationSumIV {
@@ -82,12 +80,17 @@ public class CombinationSumIV {
       dp[0] = 1;
       for (int i = 1; i < dp.length; i++) {
         // 每轮更新几种方法能到i
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(i).append(" ");
         for (int coin : coins) {
           if (i - coin >= 0) {
+            stringBuilder.append(i - coin).append(": ").append(dp[i - coin]).append(" ");
             dp[i] += dp[i - coin];
           }
         }
-        System.out.println(Arrays.toString(dp));
+        stringBuilder.append(", ").append(dp[i]);
+        // System.out.println(Arrays.toString(dp));
+        System.out.println(stringBuilder);
       }
       return dp[amount];
     }
