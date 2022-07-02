@@ -1,7 +1,5 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220627;
 
-import java.util.Arrays;
-
 import edu.neu.util.InputUtil;
 
 public class CoinChange2 {
@@ -81,8 +79,6 @@ public class CoinChange2 {
 
   class Solution {
     public int change(int amount, int[] coins) {
-      // todo 01背包 nums 外循环 target内循环 且倒序遍历
-      //
       int[] dp = new int[amount + 1];
       // dp[i] 表示 有几种方法能够组成i
       // dp[i] = dp[i-coin]+1
@@ -93,10 +89,10 @@ public class CoinChange2 {
         // 用当前已有的coin组成某个数
         // 每轮加一个
         // 数量无限
+        // 如果内外循环交换 背包容量的每一个值，都是经过 1 和 5 的计算，包含了{1, 5} 和 {5, 1}两种情况。
         for (int i = coin; i < dp.length; i++) {
           dp[i] += dp[i - coin];
         }
-        System.out.println(Arrays.toString(dp));
       }
       return dp[amount];
     }

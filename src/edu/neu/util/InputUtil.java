@@ -10,6 +10,11 @@ import edu.neu.base.TreeNode;
  * @author arronshentu
  */
 public class InputUtil {
+  public static void main(String[] args) {
+    String[] param = param("list<int>");
+    System.out.println(Arrays.toString(param));
+  }
+
   public static Object get(String testcase, Object type) {
     if (type instanceof String) {
       testcase = testcase.trim();
@@ -31,14 +36,17 @@ public class InputUtil {
       if ("String.class".equals(type)) {
         return testcase.replaceAll("\"", "");
       }
-      if ("list<list<int>>.class".equals(type)) {
+      if ("list<list<int>>.class".equals(type) || "List<List<Integer>>.class".equals(type)) {
         return stringToInt2dList(testcase);
       }
-      if ("list<int>.class".equals(type)) {
+      if ("list<int>.class".equals(type) || "List<Integer>.class".equals(type)) {
         return stringToIntegerList(testcase);
       }
       if ("String[].class".equals(type)) {
         return stringToStringArray(testcase);
+      }
+      if ("List<String>.class".equals(type)) {
+        return Arrays.stream(stringToStringArray(testcase)).toList();
       }
     }
     return null;
@@ -47,6 +55,12 @@ public class InputUtil {
   public static String[] param(String s) {
     // [integer[], integer[]]
     s = process(s, "[", 1);
+    if (s.contains("list")) {
+      s = s.replaceAll("list", "List");
+      s = s.replaceAll("integer", "Integer");
+      return Arrays.stream(s.split(", ")).map(t -> t + ".class").toArray(String[]::new);
+    }
+
     s = s.replaceAll("integer", "int");
     s = s.replaceAll("string", "String");
     return Arrays.stream(s.split(", ")).map(t -> t + ".class").toArray(String[]::new);
