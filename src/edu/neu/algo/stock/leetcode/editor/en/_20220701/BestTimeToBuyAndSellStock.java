@@ -85,17 +85,17 @@ public class BestTimeToBuyAndSellStock {
     // return dp[1];
     // }
     public int maxProfit(int[] prices) {
-      int min = Integer.MAX_VALUE;
-      int max = 0;
-      for (int price : prices) {
-        if (min > price) {
-          min = price;
-        }
-        if (max < price - min) {
-          max = price - min;
-        }
+      int n = prices.length;
+      // 一次交易有买入卖出两种状态
+      int[][] dp = new int[n + 1][2];
+      dp[0][0] = -prices[0];
+      dp[0][1] = 0;
+
+      for (int i = 1; i < n; i++) {
+        dp[i][0] = Math.max(dp[i - 1][0], -prices[i]);
+        dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
       }
-      return max;
+      return Math.max(dp[n - 1][0], dp[n - 1][1]);
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

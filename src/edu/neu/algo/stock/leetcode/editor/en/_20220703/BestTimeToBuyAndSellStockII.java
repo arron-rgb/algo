@@ -1,6 +1,4 @@
-package edu.neu.algo.stock.leetcode.editor.en._20220701;
-
-import java.util.Arrays;
+package edu.neu.algo.stock.leetcode.editor.en._20220703;
 
 import edu.neu.util.InputUtil;
 
@@ -54,7 +52,7 @@ public class BestTimeToBuyAndSellStockII {
   // 1 <= prices.length <= 3 * 10⁴
   // 0 <= prices[i] <= 10⁴
   //
-  // Related Topics Array Dynamic Programming Greedy 👍 8036 👎 2400
+  // Related Topics Array Dynamic Programming Greedy 👍 8061 👎 2401
 
   public static void main(String[] args) {
     Solution solution = new BestTimeToBuyAndSellStockII().new Solution();
@@ -78,19 +76,25 @@ public class BestTimeToBuyAndSellStockII {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int maxProfit(int[] prices) {
-      // 上升就买
-      int n = prices.length;
-      // 一次交易有买入卖出两种状态
-      int[][] dp = new int[n + 1][2];
-      dp[0][0] = -prices[0];
-      dp[0][1] = 0;
-
-      for (int i = 1; i < n; i++) {
-        dp[i][0] = Math.max(dp[i - 1][0], -prices[i]);
-        dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
+      // int n = prices.length;
+      // // 一次交易有买入卖出两种状态
+      // int[][] dp = new int[n + 1][2];
+      // dp[0][0] = -prices[0];
+      // dp[0][1] = 0;
+      //
+      // for (int i = 1; i < n; i++) {
+      // dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+      // dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
+      // }
+      // // System.out.println(Arrays.deepToString(dp));
+      // return dp[n - 1][1];
+      var i = 0;
+      for (int j = 1; j < prices.length; j++) {
+        if (prices[j] > prices[j - 1]) {
+          i += prices[j] - prices[j - 1];
+        }
       }
-      System.out.println(Arrays.deepToString(dp));
-      return Math.max(dp[n - 1][0], dp[n - 1][1]);
+      return i;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
