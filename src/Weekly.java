@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.IntStream;
 
 /**
  * @author arronshentu
@@ -7,8 +8,91 @@ import java.util.*;
 public class Weekly {
   public static void main(String[] args) throws IOException {
     Weekly weekly = new Weekly();
-    int i = weekly.longestSubsequence("1001010", 5);
-    System.out.println(i);
+    // System.out.println(weekly.peopleAwareOfSecret(684, 18, 496));
+    System.out.println(weekly.peopleAwareOfSecret2(4, 1, 3));
+    System.out.println(weekly.peopleAwareOfSecret2(4, 1, 4));
+    System.out.println(weekly.peopleAwareOfSecret2(6, 1, 2));
+    System.out.println(weekly.peopleAwareOfSecret2(6, 2, 4));
+    // System.out.println(weekly.mod);
+  }
+
+  long mod = 1000000007L;
+  int[] di = {0, 1, 0, -1};
+  int[] dj = {1, 0, -1, 0};
+
+  public int countPaths(int[][] grid) {
+    long[][] cnt = new long[grid.length][grid[0].length];
+    PriorityQueue<Pair> queue = new PriorityQueue<>();
+    for (int i = 0; i < grid.length; ++i) {
+      for (int j = 0; j < grid[0].length; ++j) {
+        queue.add(new Pair(i, j, grid[i][j]));
+        cnt[i][j] = 1;
+      }
+    }
+    long ans = 0;
+    while (!queue.isEmpty()) {
+      Pair p = queue.poll();
+      ans += cnt[p.i][p.j];
+
+      for (int k = 0; k < 4; ++k) {
+        int i2 = di[k] + p.i;
+        int j2 = dj[k] + p.j;
+        if (i2 >= 0 && i2 < cnt.length && j2 >= 0 && j2 < cnt[0].length && grid[i2][j2] > p.v) {
+          cnt[i2][j2] += cnt[p.i][p.j];
+          cnt[i2][j2] %= mod;
+        }
+      }
+    }
+    return (int)(ans % mod);
+  }
+
+  static class Pair implements Comparable<Pair> {
+    int i, j;
+    int v;
+
+    public Pair(int ii, int jj, int vv) {
+      i = ii;
+      j = jj;
+      v = vv;
+    }
+
+    public int compareTo(Pair p) {
+      return v - p.v;
+    }
+  }
+
+  // int mod = (int)(1e9 + 7);
+
+  public int peopleAwareOfSecret(int n, int delay, int forget) {
+    long[] anew = new long[n];
+    anew[0] = 1;
+    long[] cum = new long[n + 1];
+    cum[1] = 1;
+    for (int i = 1; i < n; i++) {
+      anew[i] = cum[Math.max(0, i - delay + 1)] - cum[Math.max(0, i - forget + 1)] + mod;
+      anew[i] %= mod;
+      cum[i + 1] = cum[i] + anew[i];
+      cum[i + 1] %= mod;
+    }
+    long ans = (cum[n] - cum[Math.max(0, n - forget)] + mod) % mod;
+    return (int)ans;
+  }
+
+  public int peopleAwareOfSecret2(int n, int delay, int forget) {
+    long[] dp = new long[n + 1];
+    dp[1] = 1;
+    for (int i = 2; i <= n; ++i) {
+      long sum = 0;
+      int start = Math.max(i - forget + 1, 0);
+      int end = Math.max(i - delay + 1, 0);
+      for (int j = start; j < end; ++j) {
+        sum += dp[j];
+      }
+      dp[i] = sum % mod;
+    }
+    System.out.println(Arrays.toString(dp));
+    long ans = IntStream.rangeClosed(Math.max(n - forget + 1, 0), n).mapToLong(i -> dp[i]).sum();
+    return (int)(ans % mod);
   }
 
   int minimumNumbers(int num, int k) {

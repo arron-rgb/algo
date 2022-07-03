@@ -89,6 +89,9 @@ public class InputUtil {
   public static int[][] stringToArrays(String s) {
     // [[1,2],[1,2],[1,2]]
     s = process(s, "[[", 2);
+    if ("[]".equals(s)) {
+      return new int[0][0];
+    }
     String[] split = s.split("],\\[");
     List<int[]> res = new ArrayList<>();
     for (String s1 : split) {
