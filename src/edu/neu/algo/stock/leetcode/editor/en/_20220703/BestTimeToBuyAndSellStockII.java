@@ -76,25 +76,25 @@ public class BestTimeToBuyAndSellStockII {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int maxProfit(int[] prices) {
-      // int n = prices.length;
-      // // 一次交易有买入卖出两种状态
-      // int[][] dp = new int[n + 1][2];
-      // dp[0][0] = -prices[0];
-      // dp[0][1] = 0;
-      //
-      // for (int i = 1; i < n; i++) {
-      // dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
-      // dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
-      // }
-      // // System.out.println(Arrays.deepToString(dp));
-      // return dp[n - 1][1];
-      var i = 0;
-      for (int j = 1; j < prices.length; j++) {
-        if (prices[j] > prices[j - 1]) {
-          i += prices[j] - prices[j - 1];
-        }
+      int n = prices.length;
+      // 一次交易有买入卖出两种状态
+      int[][] dp = new int[n + 1][2];
+      dp[0][0] = -prices[0];
+      dp[0][1] = 0;
+
+      for (int i = 1; i < n; i++) {
+        dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] - prices[i]);
+        dp[i][1] = Math.max(dp[i - 1][1], prices[i] + dp[i - 1][0]);
       }
-      return i;
+      // System.out.println(Arrays.deepToString(dp));
+      return dp[n - 1][1];
+      // var i = 0;
+      // for (int j = 1; j < prices.length; j++) {
+      // if (prices[j] > prices[j - 1]) {
+      // i += prices[j] - prices[j - 1];
+      // }
+      // }
+      // return i;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
