@@ -8,12 +8,6 @@ import java.util.stream.IntStream;
 public class Weekly {
   public static void main(String[] args) throws IOException {
     Weekly weekly = new Weekly();
-    // System.out.println(weekly.peopleAwareOfSecret(684, 18, 496));
-    System.out.println(weekly.peopleAwareOfSecret2(4, 1, 3));
-    System.out.println(weekly.peopleAwareOfSecret2(4, 1, 4));
-    System.out.println(weekly.peopleAwareOfSecret2(6, 1, 2));
-    System.out.println(weekly.peopleAwareOfSecret2(6, 2, 4));
-    // System.out.println(weekly.mod);
   }
 
   long mod = 1000000007L;
