@@ -1,9 +1,6 @@
 package edu.neu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Zhihu {
 
@@ -148,6 +145,23 @@ public class Zhihu {
       prod = prod * num % 1000000007;
     }
     return (int)prod;
+  }
+
+  class MyCalendar {
+    TreeMap<Integer, Integer> map;
+
+    public MyCalendar() {
+      map = new TreeMap<>();
+    }
+
+    public boolean book(int start, int end) {
+      Integer pre = map.floorKey(start), next = map.ceilingKey(start);
+      if ((pre == null || map.get(pre) <= start) && (next == null || end <= next)) {
+        map.put(start, end);
+        return true;
+      }
+      return false;
+    }
   }
 
 }
