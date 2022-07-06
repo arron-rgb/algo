@@ -1,7 +1,5 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220705;
 
-import java.util.Arrays;
-
 import edu.neu.util.InputUtil;
 
 public class MaximumPointsYouCanObtainFromCards {
@@ -89,28 +87,20 @@ public class MaximumPointsYouCanObtainFromCards {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int maxScore(int[] cardPoints, int k) {
-      int sum = Arrays.stream(cardPoints).sum();
-
+      int ans, temp = 0;
+      for (int i = 0; i < k; i++) {
+        temp += cardPoints[i];
+      }
       int n = cardPoints.length;
-      if (n == k) {
-        return sum;
+      ans = temp;
+      // [0, k]
+      // [0, k-1] + [1,n-1]
+      for (int i = k - 1; i >= 0; i--) {
+        temp -= cardPoints[i];
+        temp += cardPoints[n - k + i];
+        ans = Math.max(ans, temp);
       }
-      int min = 0;
-      for (int i = 0; i < n - k; i++) {
-        min += cardPoints[i];
-      }
-      int tmp = min;
-      // 两边共取k个数
-      // 剩余n-k个数
-      // 求中间 n-k个数的最小和
-      for (int i = n - k; i < n; i++) {
-        // 减开头 + 结尾
-        tmp = tmp - cardPoints[i - n + k] + cardPoints[i];
-        if (tmp < min) {
-          min = tmp;
-        }
-      }
-      return sum - min;
+      return ans;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

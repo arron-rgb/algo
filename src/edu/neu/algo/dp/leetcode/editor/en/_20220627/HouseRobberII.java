@@ -71,7 +71,24 @@ public class HouseRobberII {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int rob(int[] nums) {
-      return 1;
+      int n = nums.length;
+      if (n == 1) {
+        return nums[0];
+      }
+      return Math.max(rob(nums, 0, n - 1), rob(nums, 1, n));
+    }
+
+    private int rob(int[] nums, int start, int end) {
+      int max = 0;
+      int cur = 0, pre = 0;
+
+      for (int i = start; i < end; i++) {
+        max = Math.max(cur, pre + nums[i]);
+        pre = cur;
+        cur = max;
+      }
+
+      return max;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
