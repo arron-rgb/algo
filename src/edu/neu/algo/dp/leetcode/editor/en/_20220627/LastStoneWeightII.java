@@ -55,6 +55,7 @@ public class LastStoneWeightII {
   // Related Topics Array Dynamic Programming 👍 2231 👎 77
 
   public static void main(String[] args) {
+    // 1 1 2 4 7 8
     Solution solution = new LastStoneWeightII().new Solution();
     String[] data = """
           [2,7,4,1,8,1]
@@ -74,23 +75,61 @@ public class LastStoneWeightII {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
+    // public int lastStoneWeightII(int[] stones) {
+    // int sum = Arrays.stream(stones).sum();
+    // int target = sum / 2;
+    // int n = stones.length;
+    // int[][] dp = new int[n + 1][target + 1];
+    // for (int i = 1; i < dp.length; i++) {
+    // int stone = stones[i - 1];
+    // for (int j = 0; j <= target; j++) {
+    // dp[i][j] = dp[i - 1][j];
+    // if (j >= stone) {
+    // dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - stone] + stone);
+    // }
+    // }
+    // }
+    // System.out.println(Arrays.deepToString(dp));
+    // return Math.abs(sum - dp[n][target] * 2);
+    // }
     public int lastStoneWeightII(int[] stones) {
-      int sum = Arrays.stream(stones).sum();
-      int target = sum / 2;
-      int n = stones.length;
-      int[][] dp = new int[n + 1][target + 1];
-      for (int i = 1; i < dp.length; i++) {
-        int stone = stones[i - 1];
-        for (int j = 0; j <= target; j++) {
-          dp[i][j] = dp[i - 1][j];
-          if (j >= stone) {
-            dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - stone] + stone);
-          }
+      int sum = 0;
+      for (int i : stones) {
+        sum += i;
+      }
+      System.out.println(sum);
+      int target = sum >> 1;
+      // 初始化dp数组
+      int[] dp = new int[target + 1];
+      for (int stone : stones) {
+        // 采用倒序
+        for (int j = target; j >= stone; j--) {
+          // 两种情况，要么放，要么不放
+          dp[j] = Math.max(dp[j], dp[j - stone] + stone);
         }
       }
-      return Math.abs(sum - dp[n][target] * 2);
+      // dp[i]表示能够容纳i重量的背包，最多可以装多少
+      // 这道题就是 最多能够装一半的容量，看看实际能够装多少
+      System.out.println(Arrays.toString(dp));
+      // 一堆的和是dp[target]，另一堆和就是sum - dp[target]。剩下的就是 sum-dp[target]*2
+      return sum - 2 * dp[target];
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
 
+  public int lastStoneWeightII(int[] stones) {
+    int sum = 0;
+    for (int stone : stones) {
+      sum += stone;
+    }
+    int target = sum / 2;
+    int[] dp = new int[target + 1];
+    for (int stone : stones) {
+      for (int j = target; j >= stone; j--) {
+        // dp[i]可以通过dp[i-stone]到达
+        dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+      }
+    }
+    return sum - 2 * dp[target];
+  }
 }

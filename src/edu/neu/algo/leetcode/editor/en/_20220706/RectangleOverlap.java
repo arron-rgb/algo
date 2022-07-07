@@ -1,4 +1,4 @@
-package edu.neu.algo.dp.leetcode.editor.en._20220706;
+package edu.neu.algo.leetcode.editor.en._20220706;
 
 import edu.neu.util.InputUtil;
 
@@ -40,8 +40,8 @@ public class RectangleOverlap {
   public static void main(String[] args) {
     Solution solution = new RectangleOverlap().new Solution();
     String[] data = """
+          [1,1,3,3]
           [0,0,2,2]
-      [1,1,3,3]
       [0,0,1,1]
       [1,0,2,1]
       [0,0,1,1]
@@ -62,8 +62,13 @@ public class RectangleOverlap {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
-    public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
-      return false;
+    public boolean isRectangleOverlap(int[] rec2, int[] rec1) {
+      // 要重叠 A左必小于B右且A右小于B左
+      // A左 < B左 < A右 < B右
+      boolean overlapAtX = rec1[0] < rec2[2] && rec2[0] < rec1[2];
+      // A下 < B下 < A上 < B上
+      boolean overlapAtY = rec2[1] < rec1[3] && rec1[1] < rec2[3];
+      return overlapAtX && overlapAtY;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

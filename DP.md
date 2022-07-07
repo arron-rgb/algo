@@ -182,10 +182,133 @@ class Solution {
 
 ## 01
 
-1. 416
-2. 1049
-3. 494
+1. 416 PartitionEqualSubsetSum
+2. 1049 LastStoneWeightII
+3. 494 TargetSum
 4. 474
+
+01背包物品只能放一次。给定n个物品，分别有values[i]和weights[i]，放入能够容纳size的背包。先遍历物品，再倒序遍历背包容量，防止一维数组覆盖（物品重复放入）
+
+## PartitionEqualSubsetSum
+
+```java
+// Given a non-empty array nums containing only positive integers, find if the
+// array can be partitioned into two subsets such that the sum of elements in
+// both
+// subsets is equal.
+```
+
+### 思路
+
+01背包问题。求数组的和，判断数组中的数能否凑出和/2，能凑出就是sum/2+sum/2。对于给定n个数能否凑出指定的和，同零钱兑换，是组合问题。定义dp[i]表示能否凑出i，i可以通过i-nums[j]到达。
+
+### 代码
+
+```java
+class Solution {
+  public boolean canPartition(int[] nums) {
+    int sum = 0;
+    for (int n : nums) {
+      sum += n;
+    }
+    if ((sum & 1) == 1) {
+      return false;
+    }
+    sum /= 2;
+    boolean[] dp = new boolean[sum + 1];
+    dp[0] = true;
+    for (int num : nums) {
+      for (int i = sum; i >= num; i--) {
+        // // i-num的范围是 从i-num都能到达i
+        dp[i] = dp[i] || dp[i - num];
+      }
+    }
+    return dp[sum];
+  }
+}
+```
+
+## LastStoneWeightII
+
+```java
+// You are given an array of integers stones where stones[i] is the weight of
+// the iᵗʰ stone.  
+// At the end of the game, there is at most one stone left.
+//
+// Return the smallest possible weight of the left stone. If there are no
+// stones left, return 0.
+```
+
+### 思路
+
+dp[i]表示能够容纳i重量的背包，最多可以装多少。这道题就是 最多能够装一半的容量，看看实际能够装多少。一堆的和是dp[target]，另一堆和就是sum - dp[target]。剩下的就是 sum-dp[target]*2
+
+### 代码
+
+```java
+class Solution {
+  public int lastStoneWeightII(int[] stones) {
+    int sum = 0;
+    for (int stone : stones) {
+      sum += stone;
+    }
+    int target = sum / 2;
+    int[] dp = new int[target + 1];
+    for (int stone : stones) {
+      for (int j = target; j >= stone; j--) {
+        // dp[i]可以通过dp[i-stone]到达
+        dp[j] = Math.max(dp[j], dp[j - stone] + stone);
+      }
+    }
+    return sum - 2 * dp[target];
+  }
+}
+```
+
+## TODO TargetSum
+
+```java
+// You are given an integer array nums and an integer target.
+//
+// You want to build an expression out of nums by adding one of the symbols '+'
+// and '-' before each integer in nums and then concatenate all the integers.
+//
+//
+// For example, if nums = [2, 1], you can add a '+' before 2 and a '-' before 1
+// and concatenate them to build the expression "+2-1".
+//
+//
+// Return the number of different expressions that you can build, which
+// evaluates to target.
+//
+```
+
+### 思路
+
+对于每个数，有取正或负的选择。跟上述题目类似。定义n为给定的数个数，定义dp[n+1][2]。dp[i][0]表示第i个数取正，dp[i][1]表示第i个数取负。dp[i][0..2]表示有几种方法能够凑到target。
+
+### 代码
+
+```java
+class Solution {
+  public int findTargetSumWays(int[] nums, int target) {
+    int sum = 0;
+    for (int num : nums) sum += num;
+
+    if (sum < target) return 0;
+    sum -= target;
+    if (sum % 2 == 1) return 0;
+    int[] dp = new int[sum / 2 + 1];
+    dp[0] = 1;
+    for (int num : nums) {
+      for (int i = sum / 2; i >= num; i--) {
+        dp[i] += dp[i - num];
+      }
+    }
+    return dp[sum / 2];
+  }
+}
+```
 
 ## 完全
 
