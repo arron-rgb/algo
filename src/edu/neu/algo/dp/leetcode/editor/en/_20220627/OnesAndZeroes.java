@@ -71,25 +71,29 @@ public class OnesAndZeroes {
     public int findMaxForm(String[] strs, int m, int n) {
       // dp[i][j]表示i个0和j个1时的最大子集
       int[][] dp = new int[m + 1][n + 1];
-      int oneNum, zeroNum;
+
       for (String str : strs) {
-        oneNum = 0;
-        zeroNum = 0;
-        for (char ch : str.toCharArray()) {
-          if (ch == '0') {
-            zeroNum++;
-          } else {
-            oneNum++;
-          }
-        }
+        int[] count = count(str);
         // 倒序遍历
-        for (int i = m; i >= zeroNum; i--) {
-          for (int j = n; j >= oneNum; j--) {
-            dp[i][j] = Math.max(dp[i][j], dp[i - zeroNum][j - oneNum] + 1);
+        for (int i = m; i >= count[0]; i--) {
+          for (int j = n; j >= count[1]; j--) {
+            dp[i][j] = Math.max(dp[i][j], dp[i - count[0]][j - count[1]] + 1);
           }
         }
       }
       return dp[m][n];
+    }
+
+    private int[] count(String str) {
+      int[] count = new int[2];
+      for (char ch : str.toCharArray()) {
+        if (ch == '0') {
+          count[0]++;
+        } else {
+          count[1]++;
+        }
+      }
+      return count;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

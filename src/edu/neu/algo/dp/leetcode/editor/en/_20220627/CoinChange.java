@@ -81,7 +81,6 @@ public class CoinChange {
       Arrays.fill(dp, amount + 1);
       dp[0] = 0;
       for (int coin : coins) {
-        // todo 数量有限
         for (int i = coin; i < dp.length; i++) {
           dp[i] = Math.min(dp[i], dp[i - coin] + 1);
         }

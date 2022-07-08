@@ -1,7 +1,6 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220627;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 import edu.neu.util.InputUtil;
 
@@ -76,20 +75,44 @@ public class TargetSum {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
+    // public int findTargetSumWays(int[] nums, int target) {
+    // Map<Integer, Integer> map = new HashMap<>();
+    // map.put(0, 1);
+    // for (int num : nums) {
+    // Map<Integer, Integer> map2 = new HashMap<>();
+    // for (int tempSum : map.keySet()) {
+    // int key1 = tempSum + num;
+    // map2.put(key1, map2.getOrDefault(key1, 0) + map.get(tempSum));
+    // int key2 = tempSum - num;
+    // map2.put(key2, map2.getOrDefault(key2, 0) + map.get(tempSum));
+    // }
+    // map = map2;
+    // }
+    // return map.getOrDefault(target, 0);
+    // }
+
     public int findTargetSumWays(int[] nums, int target) {
-      Map<Integer, Integer> map = new HashMap<>();
-      map.put(0, 1);
+      int sum = 0;
       for (int num : nums) {
-        Map<Integer, Integer> map2 = new HashMap<>();
-        for (int tempSum : map.keySet()) {
-          int key1 = tempSum + num;
-          map2.put(key1, map2.getOrDefault(key1, 0) + map.get(tempSum));
-          int key2 = tempSum - num;
-          map2.put(key2, map2.getOrDefault(key2, 0) + map.get(tempSum));
-        }
-        map = map2;
+        sum += num;
       }
-      return map.getOrDefault(target, 0);
+
+      if (sum < target) {
+        return 0;
+      }
+      sum -= target;
+      if (sum % 2 == 1) {
+        return 0;
+      }
+      int[] dp = new int[sum / 2 + 1];
+      dp[0] = 1;
+      for (int num : nums) {
+        for (int i = sum / 2; i >= num; i--) {
+          dp[i] += dp[i - num];
+        }
+      }
+      System.out.println(Arrays.toString(dp));
+      return dp[sum / 2];
     }
   }
 
