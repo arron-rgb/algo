@@ -54,10 +54,10 @@ class Solution {
 
 ## 编辑距离
 
-1. 392
+1. 392 IsSubsequence
 2. 115
-3. 583
-4. 72
+3. 583 DeleteOperationForTwoStrings
+4. 72 EditDistance
 
 ## 子序列（连续）
 
