@@ -74,10 +74,22 @@ public class InputUtil {
     return s;
   }
 
-  public static int[] stringToArray(String s) {
-    s = process(s, "[", 1);
-    String[] split = s.split(",");
-    return Arrays.stream(split).mapToInt(Integer::parseInt).toArray();
+  public static int[] stringToArray(String input) {
+    input = input.trim();
+    if (input.startsWith("[") && input.endsWith("]")) {
+      input = input.substring(1, input.length() - 1);
+    }
+    if (input.length() == 0) {
+      return new int[0];
+    }
+
+    String[] parts = input.split(",");
+    int[] output = new int[parts.length];
+    for (int index = 0; index < parts.length; index++) {
+      String part = parts[index].trim();
+      output[index] = Integer.parseInt(part);
+    }
+    return output;
   }
 
   public static String[] stringToStringArray(String s) {
@@ -96,6 +108,9 @@ public class InputUtil {
     List<int[]> res = new ArrayList<>();
     for (String s1 : split) {
       res.add(stringToArray(s1));
+    }
+    if (s.charAt(s.length() - 1) == '[') {
+      res.add(new int[0]);
     }
     return res.toArray(new int[0][]);
   }

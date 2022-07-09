@@ -79,6 +79,9 @@ public class ShuffleTheArray {
       for (int num : nums) {
         num = -num;
       }
+
+      Pair pair = new Pair(1, 2);
+
       return nums;
     }
 
@@ -90,4 +93,7 @@ public class ShuffleTheArray {
   }
   // leetcode submit region end(Prohibit modification and deletion)
 
+  record Pair(int x, int y) {
+    public static String name;
+  }
 }

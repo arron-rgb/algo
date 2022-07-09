@@ -1,5 +1,6 @@
-package edu.neu.algo.dp.leetcode.editor.en._20220705;
+package edu.neu.algo.dp.leetcode.editor.en._20220708;
 
+import java.util.*;
 import edu.neu.util.InputUtil;
 
 public class EditDistance {
@@ -47,7 +48,7 @@ public class EditDistance {
   // 0 <= word1.length, word2.length <= 500
   // word1 and word2 consist of lowercase English letters.
   //
-  // Related Topics String Dynamic Programming 👍 9025 👎 106
+  // Related Topics String Dynamic Programming 👍 9080 👎 106
 
   public static void main(String[] args) {
     Solution solution = new EditDistance().new Solution();
@@ -72,8 +73,57 @@ public class EditDistance {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
-    public int minDistance(String word1, String word2) {
-      return 0;
+    public int minDistance(String s, String t) {
+      if (s.length() > t.length()) {
+        String tmp = t;
+        t = s;
+        s = tmp;
+      }
+      int m = s.length();
+      int n = t.length();
+      int[][] dp = new int[m + 1][n + 1];
+      // insert a letter: 可以从dp[i-1][j]或者dp[i][j-1]到dp[i][j]
+      // delete: 可以从
+      // replace: dp[i-1][j-1] + 1
+      // 当前相等: 可以从dp[i-1][j-1]直接到
+      // i=1, j=2: dp[i][j] =
+      // 当前不等: 可以从dp[i-1][j] 或者 dp[i][j-1] 插入 或者 dp[i-1][j-1] 替换
+      // - h o r s e
+      // r 1 2 2 3 4
+      // o 2 1 2 3 4
+      // s 3 2 2
+      // for (int i = 1; i < dp.length; i++) {
+      // Arrays.fill(dp[i], Integer.MAX_VALUE);
+      // }
+      for (int i = 0; i < m + 1; i++) {
+        dp[i][0] = i;
+      }
+      for (int j = 0; j < n + 1; j++) {
+        dp[0][j] = j;
+      }
+      for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+          if (s.charAt(i - 1) == t.charAt(j - 1)) {
+            // 相等 直接从dp[i-1][j-1]过来
+            dp[i][j] = dp[i - 1][j - 1];
+          } else {
+            // 不相等，可以从dp[i-1][j-1] 替换一个
+            // 或者从dp[i-1][j] or dp[i][j-1] 加一个
+            dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
+          }
+        }
+      }
+      return dp[m][n];
+    }
+
+    int min(int... i) {
+      int min = Integer.MAX_VALUE;
+      for (int i1 : i) {
+        if (i1 < min) {
+          min = i1;
+        }
+      }
+      return min;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

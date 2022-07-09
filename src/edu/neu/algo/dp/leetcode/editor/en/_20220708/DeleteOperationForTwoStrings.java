@@ -1,5 +1,6 @@
-package edu.neu.algo.dp.leetcode.editor.en._20220705;
+package edu.neu.algo.dp.leetcode.editor.en._20220708;
 
+import java.util.*;
 import edu.neu.util.InputUtil;
 
 public class DeleteOperationForTwoStrings {
@@ -33,7 +34,7 @@ public class DeleteOperationForTwoStrings {
   // 1 <= word1.length, word2.length <= 500
   // word1 and word2 consist of only lowercase English letters.
   //
-  // Related Topics String Dynamic Programming 👍 4176 👎 62
+  // Related Topics String Dynamic Programming 👍 4190 👎 63
 
   public static void main(String[] args) {
     Solution solution = new DeleteOperationForTwoStrings().new Solution();
@@ -58,8 +59,35 @@ public class DeleteOperationForTwoStrings {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
-    public int minDistance(String word1, String word2) {
-      return 0;
+    public int minDistance(String s, String t) {
+
+      int m = s.length();
+      int n = t.length();
+      int[][] dp = new int[m + 1][n + 1];
+
+      // - e a t
+      // s 0 0 0
+      // e 1 1 1
+      // a 1 2 2
+      // dp[i][j] 表示 从s.substring(0,i)和t.substring(0, j) 最长的连续子序列的长度
+      // 最后的结果就是
+      // 每步 可以删除任意一个字符串中的一个字符。
+      // - l e e t c o d e
+      // e 0 1 1 1 1 1 1 1
+      // t 0 1 1 2 2
+      // c 0 1 1 2 3
+      // o
+      for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+          if (s.charAt(i - 1) == t.charAt(j - 1)) {
+            dp[i][j] = dp[i - 1][j - 1] + 1;
+          } else {
+            dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
+          }
+        }
+      }
+      // System.out.println(Arrays.deepToString(dp));
+      return m + n - 2 * dp[m][n];
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
