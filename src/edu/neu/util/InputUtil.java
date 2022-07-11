@@ -116,6 +116,9 @@ public class InputUtil {
   }
 
   public static TreeNode stringToTree(String s) {
+    if ("[]".equals(s)) {
+      return null;
+    }
     s = process(s, "[", 1);
     String[] parts = s.split(",");
     String item = parts[0];
