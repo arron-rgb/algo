@@ -10,6 +10,34 @@ public class Weekly {
     Weekly weekly = new Weekly();
   }
 
+  /**
+   * Your SmallestInfiniteSet object will be instantiated and called as such: SmallestInfiniteSet obj = new
+   * SmallestInfiniteSet(); int param_1 = obj.popSmallest(); obj.addBack(num);
+   */
+
+  public int fillCups(int[] amount) {
+    // 现有一台饮水机，可以制备冷水、温水和热水。每秒钟，可以装满 2 杯 不同 类型的水或者 1 杯任意类型的水。
+    //
+    // 给你一个下标从 0 开始、长度为 3 的整数数组 amount ，
+    // 其中 amount[0]、amount[1] 和 amount[2] 分别表示需要装满冷水、温水和热水的杯子数量。返回装满所有杯子所需的 最少 秒数。
+    int count = 0;
+    int sum = 0;
+    int max = -1;
+    int min = Integer.MAX_VALUE;
+    for (int i : amount) {
+      sum += i;
+      if (i == 0) {
+        count++;
+      }
+      min = Math.min(i, min);
+      max = Math.max(i, max);
+    }
+    if (count == 3) {
+      return sum % 2 == 0 ? sum / 2 : sum / 2 + 1;
+    }
+    return max;
+  }
+
   long mod = 1000000007L;
   int[] di = {0, 1, 0, -1};
   int[] dj = {1, 0, -1, 0};

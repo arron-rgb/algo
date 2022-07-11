@@ -1,8 +1,65 @@
 package edu.neu;
 
+import edu.neu.util.InputUtil;
+
 import java.util.*;
 
 public class Zhihu {
+
+  public static void main(String[] args) {
+    Zhihu zhihu = new Zhihu();
+    String[] data = """
+      "_L__R__R_"
+      "L______RR"
+      "R_L_"
+      "__LR"
+      "_R"
+      "R_"
+          """.trim().replaceAll("\n", "|").split("\\|");
+    String[] paramTypes = InputUtil.param("[String, String]");
+    Object[] params = new Object[data.length];
+    for (int i = 0; i < data.length; i++) {
+      params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
+    }
+    int loop = data.length / paramTypes.length;
+    for (int i = 0; i < loop; i++) {
+      // boolean q =
+      // zhihu.canChange((String)params[1 - 1 + i * paramTypes.length], (String)params[2 - 1 + i * paramTypes.length]);
+      // System.out.println(q);
+    }
+  }
+
+  public boolean canChange(String start, String end) {
+    if (!start.replace("_", "").equals(end.replace("_", ""))) {
+      return false;
+    }
+
+    int t = 0;
+    for (int i = 0; i < start.length(); ++i) {
+      if (start.charAt(i) == 'L') {
+        while (end.charAt(t) != 'L') {
+          t++;
+        }
+        if (i < t++) {
+          return false;
+        }
+      }
+    }
+
+    t = 0;
+    for (int i = 0; i < start.length(); ++i) {
+      if (start.charAt(i) == 'R') {
+        while (end.charAt(t) != 'R') {
+          t++;
+        }
+        if (i > t++) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
 
   public int countNumbersWithUniqueDigits(int n) {
     if (n == 0) {
@@ -15,15 +72,6 @@ public class Zhihu {
       res += count;
     }
     return res;
-  }
-
-  public static void main(String[] args) {
-    Zhihu zhihu = new Zhihu();
-    // long value = zhihu.maximumBeauty(new int[] {3, 6, 2, 2}, 7, 6, 12, 1);
-    // System.out.println(value);
-    // System.out.println(zhihu.maximumProduct(new int[] {0, 4}, 5));
-    // System.out.println(Integer.parseInt(String.valueOf(10_000_000_000)));
-    // zhihu.shiftGrid(new int[][] {{3, 8, 1, 9}, {19, 7, 2, 5}, {4, 6, 11, 10}, {12, 0, 21, 13}}, 4);
   }
 
   public List<List<Integer>> shiftGrid(int[][] grid, int k) {

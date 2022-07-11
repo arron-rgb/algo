@@ -265,7 +265,7 @@ class Solution {
 }
 ```
 
-## TODO TargetSum
+## TargetSum
 
 ```java
 // You are given an integer array nums and an integer target.
@@ -285,7 +285,7 @@ class Solution {
 
 ### 思路
 
-对于每个数，有取正或负的选择。跟上述题目类似。定义n为给定的数个数，定义dp[n+1][2]。dp[i][0]表示第i个数取正，dp[i][1]表示第i个数取负。dp[i][0..2]表示有几种方法能够凑到target。
+对于每个数，有取正或负的选择。跟上述题目类似。定义n为给定的数个数，定义dp```[n+1][2]```。dp```[i][0]```表示第i个数取正，dp[i][1]表示第i个数取负。```dp[i][0..2]```表示有几种方法能够凑到target。
 
 ### 代码
 
@@ -298,14 +298,15 @@ class Solution {
     if (sum < target) return 0;
     sum -= target;
     if (sum % 2 == 1) return 0;
-    int[] dp = new int[sum / 2 + 1];
+    sum /= 2;
+    int[] dp = new int[sum + 1];
     dp[0] = 1;
     for (int num : nums) {
-      for (int i = sum / 2; i >= num; i--) {
+      for (int i = sum; i >= num; i--) {
         dp[i] += dp[i - num];
       }
     }
-    return dp[sum / 2];
+    return dp[sum];
   }
 }
 ```
@@ -322,7 +323,6 @@ class Solution {
 ## 零钱兑换
 
 ```java
-
 // You are given an integer array coins representing coins of different
 // denominations and an integer amount representing a total amount of money.
 //

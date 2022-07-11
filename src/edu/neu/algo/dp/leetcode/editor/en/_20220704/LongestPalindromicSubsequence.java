@@ -38,8 +38,12 @@ public class LongestPalindromicSubsequence {
   public static void main(String[] args) {
     Solution solution = new LongestPalindromicSubsequence().new Solution();
     String[] data = """
-          "bbbab"
-      "cbbd"
+      "_L__R__R_"
+      "L______RR"
+      "R_L_"
+      "__LR"
+      "_R"
+      "R_"
           """.trim().replaceAll("\n", "|").split("\\|");
     String[] paramTypes = InputUtil.param("[String]");
     Object[] params = new Object[data.length];
