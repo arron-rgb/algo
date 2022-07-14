@@ -1,6 +1,5 @@
-package edu.neu.algo.dp.leetcode.editor.en._20220709;
+package edu.neu.algo.dp.leetcode.editor.en._20220713;
 
-import java.rmi.dgc.VMID;
 import java.util.*;
 import edu.neu.util.InputUtil;
 
@@ -54,7 +53,7 @@ public class FrequencyOfTheMostFrequentElement {
   // 1 <= k <= 10⁵
   //
   // Related Topics Array Binary Search Greedy Sliding Window Sorting Prefix Sum ?
-  // ? 1404 👎 31
+  // ? 1421 👎 31
 
   public static void main(String[] args) {
     Solution solution = new FrequencyOfTheMostFrequentElement().new Solution();
@@ -81,24 +80,14 @@ public class FrequencyOfTheMostFrequentElement {
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
-
     public int maxFrequency(int[] nums, int k) {
       Arrays.sort(nums);
       int left = 1, right = nums.length;
       while (left < right) {
-        // int mid = right - (right - left) / 2;
-        // int mid = left + (right - left + 1) / 2;
-        // todo 如何判断某题取左边界还是右边界
-        // 本题取右边界 所以需要+1
-        // 如果是不加一 left 满足条件 left =2, right = 3, mid = 2
-        // left会一直卡在2
         int mid = left + (right - left) / 2;
-        //
         if (check(mid, nums, k)) {
           left = mid;
-          // left = mid + 1;
         } else {
-          // right = mid;
           right = mid - 1;
         }
       }
@@ -113,7 +102,6 @@ public class FrequencyOfTheMostFrequentElement {
       if (sum + k >= (long)nums[len - 1] * len) {
         return true;
       }
-      // 取nums[i+len-1]为出现最高频的元素
       for (int i = 1; i + len - 1 < nums.length; i++) {
         sum += (nums[i + len - 1] - nums[i - 1]);
         if (sum + k >= (long)nums[i + len - 1] * len) {
@@ -122,27 +110,7 @@ public class FrequencyOfTheMostFrequentElement {
       }
       return false;
     }
-
   }
-
   // leetcode submit region end(Prohibit modification and deletion)
-  // todo
-  class WindowSolution {
-    public int maxFrequency(int[] nums, int k) {
-      Arrays.sort(nums);
-      int window = 0;
-      int left = 0;
-      int right = 0;
-      while (right < nums.length) {
-        int count = right - left + 1;
-        int max = nums[right];
-        window += nums[right];
-        if (max * count - window > k) {
-          window -= nums[left++];
-        }
-        right++;
-      }
-      return right - left;
-    }
-  }
+
 }

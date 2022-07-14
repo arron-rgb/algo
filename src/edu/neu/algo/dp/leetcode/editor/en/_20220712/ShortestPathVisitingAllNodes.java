@@ -1,5 +1,6 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220712;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import edu.neu.util.InputUtil;
 
@@ -45,6 +46,7 @@ public class ShortestPathVisitingAllNodes {
   // Graph Bitmask 👍 2595 👎 125
 
   public static void main(String[] args) {
+
     Solution solution = new ShortestPathVisitingAllNodes().new Solution();
     String[] data = """
           [[1,2,3],[0],[0],[0]]
@@ -76,18 +78,20 @@ public class ShortestPathVisitingAllNodes {
       Deque<int[]> deque = new ArrayDeque<>();
       for (int i = 0; i < n; ++i) {
         deque.add(new int[] {i, 1 << i, 0});
+        // todo visited什么用
         visited[i][1 << i] = true;
       }
       int res = 0;
       while (!deque.isEmpty()) {
         int[] poll = deque.remove();
         int u = poll[0], path = poll[1], dist = poll[2];
+        // 所有的点都已到达
         if (path == (1 << n) - 1) {
           res = dist;
           break;
         }
         for (int v : graph[u]) {
-          // todo 将 path 的第 v 位置为 1,即将v加入path，看是否已经有过这种情况
+          // 将 path 的第 v 位置为 1,即将v加入path，看是否已经有过这种情况
           int pathV = path | (1 << v);
           if (!visited[v][pathV]) {
             visited[v][pathV] = true;
@@ -100,5 +104,50 @@ public class ShortestPathVisitingAllNodes {
   }
 
   // leetcode submit region end(Prohibit modification and deletion)
+
+  class Astar {
+    int INF = 0x3f3f3f3f;
+    int n;
+
+    int f(int state) {
+      int ans = 0;
+      for (int i = 0; i < n; i++) {
+        if (((state >> i) & 1) == 0)
+          ans++;
+      }
+      return ans;
+    }
+
+    public int shortestPathLength(int[][] g) {
+      n = g.length;
+      int mask = 1 << n;
+      int[][] dist = new int[mask][n];
+      for (int i = 0; i < mask; i++) {
+        for (int j = 0; j < n; j++) {
+          dist[i][j] = INF;
+        }
+      }
+      PriorityQueue<int[]> q = new PriorityQueue<>(Comparator.comparingInt(a -> a[2])); // state, u, val
+      for (int i = 0; i < n; i++) {
+        dist[1 << i][i] = 0;
+        q.add(new int[] {1 << i, i, f(i << 1)});
+      }
+      while (!q.isEmpty()) {
+        int[] poll = q.poll();
+        int state = poll[0], u = poll[1], step = dist[state][u];
+        if (state == mask - 1) {
+          return step;
+        }
+        for (int i : g[u]) {
+          int nState = state | (1 << i);
+          if (dist[nState][i] > step + 1) {
+            dist[nState][i] = step + 1;
+            q.add(new int[] {nState, i, step + 1 + f(nState)});
+          }
+        }
+      }
+      return -1; // never
+    }
+  }
 
 }
