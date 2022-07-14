@@ -1,5 +1,8 @@
 package edu.neu.base;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * @author arronshentu
  */
@@ -22,7 +25,21 @@ public class TreeNode {
 
   @Override
   public String toString() {
-    return "TreeNode{" + "val=" + val + '}';
+
+    StringBuilder output = new StringBuilder();
+    Queue<TreeNode> nodeQueue = new LinkedList<>();
+    nodeQueue.add(this);
+    while (!nodeQueue.isEmpty()) {
+      TreeNode node = nodeQueue.remove();
+      if (node == null) {
+        output.append("null, ");
+        continue;
+      }
+      output.append(node.val).append(", ");
+      nodeQueue.add(node.left);
+      nodeQueue.add(node.right);
+    }
+    return "[" + output.substring(0, output.length() - 2) + "]";
   }
 
   @Override

@@ -72,28 +72,60 @@ public class SplitArrayLargestSum {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int splitArray(int[] nums, int m) {
+      int left = Arrays.stream(nums).max().getAsInt();
+      int right = Arrays.stream(nums).sum();
+      return binary(nums, left, right, m);
+    }
+
+    int binary(int[] nums, int left, int right, int m) {
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (check(nums, mid, m)) {
+          right = mid;
+        } else {
+          left = mid + 1;
+        }
+      }
+      return left;
+    }
+
+    boolean check(int[] nums, int mid, int m) {
+      int currentSum = 0;
+      int splitsRequired = 0;
+
+      for (int element : nums) {
+        if (currentSum + element <= mid) {
+          currentSum += element;
+        } else {
+          currentSum = element;
+          splitsRequired++;
+        }
+      }
+      return splitsRequired + 1 <= m;
+    }
+  }
+
+  // leetcode submit region end(Prohibit modification and deletion)
+  class ConfusingSolution {
+    public int splitArray(int[] nums, int m) {
       int right = 0;
       int left = 0;
       for (int num : nums) {
         right += num;
         left = Math.max(left, num);
       }
-      int mid = -1;
-      int res = -1;
-      while (left <= right) {
-        mid = left + (right - left) / 2;
-        // todo 注意一下最后 条件为true的时候 取值
-        if (minimumSubarraysRequired(nums, mid) <= m) {
-          right = mid - 1;
-          res = mid;
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (check(nums, mid)) {
+          right = mid;
         } else {
           left = mid + 1;
         }
       }
-      return res;
+      return left;
     }
 
-    private int minimumSubarraysRequired(int[] nums, int maxSumAllowed) {
+    private boolean check(int[] nums, int maxSumAllowed) {
       int currentSum = 0;
       int splitsRequired = 0;
 
@@ -105,9 +137,8 @@ public class SplitArrayLargestSum {
           splitsRequired++;
         }
       }
-      return splitsRequired + 1;
+      return splitsRequired + 1 <= maxSumAllowed;
     }
   }
-  // leetcode submit region end(Prohibit modification and deletion)
 
 }
