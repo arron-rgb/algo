@@ -48,6 +48,7 @@ public class SplitArrayLargestSum {
 
   public static void main(String[] args) {
     Solution solution = new SplitArrayLargestSum().new Solution();
+    ConfusingSolution confusingSolution = new SplitArrayLargestSum().new ConfusingSolution();
     String[] data = """
           [7,2,5,10,8]
       2
@@ -66,6 +67,10 @@ public class SplitArrayLargestSum {
       int q =
         solution.splitArray((int[])params[1 + i * paramTypes.length - 1], (int)params[2 + i * paramTypes.length - 1]);
       System.out.println(q);
+      q = confusingSolution.splitArray((int[])params[1 + i * paramTypes.length - 1],
+        (int)params[2 + i * paramTypes.length - 1]);
+      System.out.println(q);
+
     }
   }
 
@@ -116,7 +121,7 @@ public class SplitArrayLargestSum {
       }
       while (left < right) {
         int mid = left + (right - left) / 2;
-        if (check(nums, mid)) {
+        if (check(nums, mid, m)) {
           right = mid;
         } else {
           left = mid + 1;
@@ -125,19 +130,19 @@ public class SplitArrayLargestSum {
       return left;
     }
 
-    private boolean check(int[] nums, int maxSumAllowed) {
-      int currentSum = 0;
-      int splitsRequired = 0;
+    private boolean check(int[] nums, int mid, int m) {
+      int cur = 0;
+      int count = 0;
 
       for (int element : nums) {
-        if (currentSum + element <= maxSumAllowed) {
-          currentSum += element;
+        if (cur + element <= mid) {
+          cur += element;
         } else {
-          currentSum = element;
-          splitsRequired++;
+          cur = element;
+          count++;
         }
       }
-      return splitsRequired + 1 <= maxSumAllowed;
+      return count + 1 <= m;
     }
   }
 

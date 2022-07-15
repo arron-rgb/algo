@@ -86,12 +86,12 @@ public class FrequencyOfTheMostFrequentElement {
       while (left < right) {
         int mid = left + (right - left) / 2;
         if (check(mid, nums, k)) {
-          left = mid;
+          left = mid + 1;
         } else {
-          right = mid - 1;
+          right = mid;
         }
       }
-      return left;
+      return check(left, nums, k) ? left : left - 1;
     }
 
     boolean check(int len, int[] nums, int k) {
