@@ -78,7 +78,6 @@ public class ShortestPathVisitingAllNodes {
       Deque<int[]> deque = new ArrayDeque<>();
       for (int i = 0; i < n; ++i) {
         deque.add(new int[] {i, 1 << i, 0});
-        // todo visited什么用
         visited[i][1 << i] = true;
       }
       int res = 0;
