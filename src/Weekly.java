@@ -1,3 +1,5 @@
+import edu.neu.util.InputUtil;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -6,36 +8,83 @@ import java.util.stream.IntStream;
  * @author arronshentu
  */
 public class Weekly {
-  public static void main(String[] args) throws IOException {
-    Weekly weekly = new Weekly();
+  public int[] smallestTrimmedNumbers(String[] nums, int[][] queries) {
+    return null;
   }
 
-  /**
-   * Your SmallestInfiniteSet object will be instantiated and called as such: SmallestInfiniteSet obj = new
-   * SmallestInfiniteSet(); int param_1 = obj.popSmallest(); obj.addBack(num);
-   */
+  public static void main(String[] args) throws IOException {
+    Weekly solution = new Weekly();
+    String[] data = """
+      [229,398,269,317,420,464,491,218,439,153,482,169,411,93,147,50,347,210,251,366,401]
+          """.trim().replaceAll("\n", "|").split("\\|");
+    String[] paramTypes = InputUtil.param("[int[]]");
+    Object[] params = new Object[data.length];
+    for (int i = 0; i < data.length; i++) {
+      params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
+    }
+    int loop = data.length / paramTypes.length;
+    for (int i = 0; i < loop; i++) {
+      int[] q = solution.smallestTrimmedNumbers((String[])params[1 - 1 + i * paramTypes.length],
+        (int[][])params[2 - 1 + i * paramTypes.length]);
+      System.out.println(Arrays.toString(q));
+    }
+  }
 
-  public int fillCups(int[] amount) {
-    // 现有一台饮水机，可以制备冷水、温水和热水。每秒钟，可以装满 2 杯 不同 类型的水或者 1 杯任意类型的水。
-    //
-    // 给你一个下标从 0 开始、长度为 3 的整数数组 amount ，
-    // 其中 amount[0]、amount[1] 和 amount[2] 分别表示需要装满冷水、温水和热水的杯子数量。返回装满所有杯子所需的 最少 秒数。
+  static int solve(String str) {
+    String programmer = "programmer";
+
+    String head = programmer;
+
+    int i = 0;
+    // programmer
+    for (; i < str.length(); i++) {
+      int pIndex = head.indexOf(str.charAt(i));
+      if (pIndex != -1) {
+        head = head.substring(0, pIndex).concat(head.substring(pIndex + 1));
+        System.out.println(head);
+      }
+
+      if (head.length() == 0) {
+        i++;
+        break;
+      }
+    }
+
+    String tail = programmer;
+
+    int j = str.length() - 1;
+    // programmer
+    for (; j >= 0; j--) {
+      int pIndex = tail.indexOf(str.charAt(j));
+      if (pIndex != -1) {
+        tail = tail.substring(0, pIndex).concat(tail.substring(pIndex + 1));
+        // System.out.println(tail);
+      }
+
+      if (tail.length() == 0) {
+        j--;
+        break;
+      }
+    }
+
+    // System.out.println(head);
+    // System.out.println(tail);
+    // System.out.println(i);
+    // System.out.println(j);
+
+    return j - i + 1;
+  }
+
+  public static String gamingArray(List<Integer> arr) {
     int count = 0;
-    int sum = 0;
-    int max = -1;
-    int min = Integer.MAX_VALUE;
-    for (int i : amount) {
-      sum += i;
-      if (i == 0) {
+    int max = 0;
+    for (int number : arr) {
+      if (max < number) {
+        max = number;
         count++;
       }
-      min = Math.min(i, min);
-      max = Math.max(i, max);
     }
-    if (count == 3) {
-      return sum % 2 == 0 ? sum / 2 : sum / 2 + 1;
-    }
-    return max;
+    return count % 2 == 0 ? "ANDY" : "BOB";
   }
 
   long mod = 1000000007L;
@@ -179,19 +228,6 @@ public class Weekly {
       }
     }
     return dp[m][n];
-  }
-
-  public void duplicateZeros(int[] arr) {
-    List<Integer> list = new ArrayList<>();
-    for (int i : arr) {
-      list.add(i);
-      if (i == 0) {
-        list.add(i);
-      }
-    }
-    System.out.println(list);
-    arr = list.stream().limit(arr.length).mapToInt(t -> t).toArray();
-    System.out.println(Arrays.toString(arr));
   }
 
   public int longestSubarray(int[] nums, int limit) {

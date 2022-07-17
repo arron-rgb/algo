@@ -1,6 +1,5 @@
 package edu.neu.algo.review.leetcode.editor.en._20220715;
 
-import java.util.*;
 import edu.neu.util.InputUtil;
 
 public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
@@ -40,7 +39,9 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
   // Related Topics Array Binary Search Matrix Prefix Sum 👍 837 👎 72
 
   public static void main(String[] args) {
-    Solution solution = new MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold().new Solution();
+    MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold a =
+      new MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold();
+    Solution solution = a.new Solution();
     String[] data =
       """
         [[1,1,3,2,4,3,2],[1,1,3,2,4,3,2],[1,1,3,2,4,3,2]]
@@ -49,6 +50,16 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
         1
         [[28,39,98,91,7,99],[79,3,17,83,9,92],[81,73,42,27,67,70],[88,30,73,99,96,89],[27,59,0,1,65,79],[42,55,48,29,86,96]]
         24829
+        [[2,2,2],[3,3,3],[4,4,4]]
+        13
+        [[2,2,2],[3,3,3],[4,4,4]]
+        13
+        [[2,2,2],[3,3,3],[4,4,4]]
+        5
+        [[2,2,2],[3,3,3],[4,4,4]]
+        15
+        [[2,2,2],[3,3,3],[4,4,4]]
+        28
               """
         .trim().replaceAll("\n", "|").split("\\|");
     String[] paramTypes = InputUtil.param("[int[][], int]");
@@ -60,7 +71,8 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
     for (int i = 0; i < loop; i++) {
       int q = solution.maxSideLength((int[][])params[1 + i * paramTypes.length - 1],
         (int)params[2 + i * paramTypes.length - 1]);
-      System.out.println(q);
+      System.out.println(q + ": "
+        + a.largestSubgrid((int[][])params[1 + i * paramTypes.length - 1], (int)params[2 + i * paramTypes.length - 1]));
     }
   }
 
@@ -88,7 +100,7 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
       while (left < right) {
         int mid = left + (right - left + 1) / 2;
         // 这题取右边界
-        if (check(mid, prefixSum, threshold, min)) {
+        if (check(mid, prefixSum, threshold)) {
           left = mid;
         } else {
           right = mid - 1;
@@ -97,7 +109,7 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
       return left;
     }
 
-    private boolean check(int len, int[][] prefixSum, int th, int min) {
+    private boolean check(int len, int[][] prefixSum, int th) {
       for (int i = len; i < prefixSum.length; i++) {
         // find a point act as the right-bottom point of a square
         // then the sum is prefixSum[]
@@ -116,4 +128,50 @@ public class MaximumSideLengthOfASquareWithSumLessThanOrEqualToThreshold {
   // [0, 1, 2, 5, 7, 11, 14, 16],
   // [0, 2, 4, 10, 14, 22, 28, 32],
   // [0, 3, 6, 15, 21, 33, 42, 48]
+  int largestSubgrid(int[][] grid, int maxSum) {
+    int n = grid.length;
+    int[][] sum = new int[n][n];
+    int mx = 0;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (i == 0 && j == 0) {
+          sum[0][0] = grid[0][0];
+        } else if (i == 0) {
+          sum[0][j] = sum[0][j - 1] + grid[0][j];
+        } else if (j == 0) {
+          sum[i][0] = sum[i - 1][0] + grid[i][0];
+        } else {
+          sum[i][j] = sum[i - 1][j] + sum[i][j - 1] + grid[i][j] - sum[i - 1][j - 1];
+        }
+        mx = Math.max(mx, grid[i][j]);
+        // cout << sum[i][j] <<' ';
+      }
+      // cout <<endl;
+    }
+    // if(maxSum < mx)return 0;
+    // if(maxSum >= sum[n-1][n-1])return n;
+    int ans = 0;
+    int l = 0, r = n;
+    while (l < r) {
+      int x = l + (r - l + 1) / 2;
+      int res = 0;
+      for (int i = x - 1; i < n; i++) {
+        for (int j = x - 1; j < n; j++) {
+          int total = sum[i][j];
+          if (i >= x)
+            total -= sum[i - x][j];
+          if (j >= x)
+            total -= sum[i][j - x];
+          if (i >= x && j >= x)
+            total += sum[i - x][j - x];
+          res = Math.max(res, total);
+        }
+      }
+      if (maxSum >= res)
+        l = x;
+      else
+        r = x - 1;
+    }
+    return r;
+  }
 }

@@ -9,24 +9,41 @@ public class Zhihu {
   public static void main(String[] args) {
     Zhihu zhihu = new Zhihu();
     String[] data = """
-      "_L__R__R_"
-      "L______RR"
-      "R_L_"
-      "__LR"
-      "_R"
-      "R_"
-          """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[String, String]");
+      """.trim().replaceAll("\n", "|").split("\\|");
+    String[] paramTypes = InputUtil.param("[String[], int[][]]");
     Object[] params = new Object[data.length];
     for (int i = 0; i < data.length; i++) {
       params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
     }
     int loop = data.length / paramTypes.length;
     for (int i = 0; i < loop; i++) {
-      // boolean q =
-      // zhihu.canChange((String)params[1 - 1 + i * paramTypes.length], (String)params[2 - 1 + i * paramTypes.length]);
-      // System.out.println(q);
     }
+  }
+
+  public int hIndex(int[] citations) {
+    // 总共有h篇论文, 被引用了h次
+    int max = -1;
+    int[] count = new int[1005];
+    for (int citation : citations) {
+      count[citation]++;
+      max = Math.max(citation, max);
+    }
+    int res = -1;
+    for (int i = 0; i < max + 1; i++) {
+      if (count[i] == i) {
+        boolean flag = true;
+        for (int j = i + 1; j < max + 1; j++) {
+          if (count[j] > i) {
+            flag = false;
+            break;
+          }
+        }
+        if (flag) {
+          res = Math.max(res, i);
+        }
+      }
+    }
+    return res;
   }
 
   public boolean canChange(String start, String end) {
