@@ -48,4 +48,8 @@ public class ListNode {
     }
     return false;
   }
+
+  public static ListNode empty() {
+    return new ListNode(0);
+  }
 }

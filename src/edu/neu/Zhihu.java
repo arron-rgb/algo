@@ -9,48 +9,68 @@ public class Zhihu {
   public static void main(String[] args) {
     Zhihu zhihu = new Zhihu();
     String[] data = """
+      [4,3,-2,9,-4,2,7]
+      6
+      [5,-7,8,-6,4,1,-9,5]
+      5
       """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[String[], int[][]]");
+    String[] paramTypes = InputUtil.param("[int[], int]");
     Object[] params = new Object[data.length];
     for (int i = 0; i < data.length; i++) {
       params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
     }
     int loop = data.length / paramTypes.length;
     for (int i = 0; i < loop; i++) {
+      int q = zhihu.solve((int[])params[i * paramTypes.length], (int)params[2 - 1 + i * paramTypes.length]);
+      System.out.println(q);
     }
   }
 
-  public int hIndex(int[] citations) {
-    // 总共有h篇论文, 被引用了h次
-    int max = -1;
-    int[] count = new int[1005];
-    for (int citation : citations) {
-      count[citation]++;
-      max = Math.max(citation, max);
+  public int numSubmatrixSumTarget(int[][] A, int target) {
+    int res = 0, m = A.length, n = A[0].length;
+    for (int i = 0; i < m; i++) {
+      for (int j = 1; j < n; j++) {
+        A[i][j] += A[i][j - 1];
+      }
     }
-    int res = -1;
-    for (int i = 0; i < max + 1; i++) {
-      if (count[i] == i) {
-        boolean flag = true;
-        for (int j = i + 1; j < max + 1; j++) {
-          if (count[j] > i) {
-            flag = false;
-            break;
-          }
-        }
-        if (flag) {
-          res = Math.max(res, i);
+    Map<Integer, Integer> counter = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+      for (int j = i; j < n; j++) {
+        counter.clear();
+        counter.put(0, 1);
+        int cur = 0;
+        for (int k = 0; k < m; k++) {
+          cur += A[k][j] - (i > 0 ? A[k][i - 1] : 0);
+          res += counter.getOrDefault(cur - target, 0);
+          counter.put(cur, counter.getOrDefault(cur, 0) + 1);
         }
       }
     }
     return res;
   }
 
-  public boolean canChange(String start, String end) {
-    if (!start.replace("_", "").equals(end.replace("_", ""))) {
-      return false;
+  int solve(int[] nums, int k) {
+    int n = nums.length;
+    int[] prefix = new int[n + 1];
+    Deque<Integer> deque = new ArrayDeque<>();
+    int res = Integer.MIN_VALUE;
+    deque.add(0);
+    for (int i = 0; i < n; i++) {
+      prefix[i + 1] += prefix[i] + nums[i];
+      int max = prefix[deque.peekFirst()];
+      res = Math.max(res, prefix[i + 1] - max);
+      while (!deque.isEmpty() && prefix[deque.peekLast()] >= prefix[i + 1]) {
+        deque.pollLast();
+      }
+      deque.add(i + 1);
+      if (i - (deque.peekFirst() - 1) + 1 > k) {
+        deque.pollFirst();
+      }
     }
+    return res;
+  }
 
+  public boolean canChange(String start, String end) {
     int t = 0;
     for (int i = 0; i < start.length(); ++i) {
       if (start.charAt(i) == 'L') {

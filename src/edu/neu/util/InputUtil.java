@@ -18,6 +18,9 @@ public class InputUtil {
   public static Object get(String testcase, Object type) {
     if (type instanceof String) {
       testcase = testcase.trim();
+      if ("ListNode[].class".equals(type)) {
+        return stringToLists(testcase);
+      }
       if ("ListNode.class".equals(type)) {
         return stringToList(testcase);
       }
@@ -158,6 +161,9 @@ public class InputUtil {
   }
 
   public static ListNode stringToList(String s) {
+    if ("[]".equals(s)) {
+      return ListNode.empty();
+    }
     // [[1,2],[1,2],[1,2]]
     s = process(s, "[", 1);
     String[] split = s.split(",");
@@ -168,6 +174,22 @@ public class InputUtil {
       index = index.next;
     }
     return res.next;
+  }
+
+  public static ListNode[] stringToLists(String s) {
+    if ("[[]]".equals(s) || "[]".equals(s)) {
+      return new ListNode[0];
+    }
+    s = process(s, "[", 1);
+    // [1,2],[1,2]
+    s = process(s, "[", 1);
+    String[] split = s.split("],\\[");
+    List<ListNode> list = new ArrayList<>();
+    for (String s1 : split) {
+      list.add(stringToList(s1));
+    }
+    return list.toArray(new ListNode[0]);
+    // return (ListNode[])Arrays.stream(split).map(InputUtil::stringToList).toList().toArray(new Object[0]);
   }
 
   public static List<Integer> stringToIntegerList(String s) {
