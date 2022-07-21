@@ -30,14 +30,24 @@ public class TreeNode {
     Queue<TreeNode> nodeQueue = new LinkedList<>();
     nodeQueue.add(this);
     while (!nodeQueue.isEmpty()) {
-      TreeNode node = nodeQueue.remove();
-      if (node == null) {
-        output.append("null, ");
-        continue;
+      int size = nodeQueue.size();
+      boolean notNull = false;
+      StringBuilder level = new StringBuilder();
+      for (int i = 0; i < size; i++) {
+        TreeNode node = nodeQueue.remove();
+        if (node == null) {
+          level.append("null, ");
+          continue;
+        } else {
+          notNull = true;
+        }
+        level.append(node.val).append(", ");
+        nodeQueue.add(node.left);
+        nodeQueue.add(node.right);
       }
-      output.append(node.val).append(", ");
-      nodeQueue.add(node.left);
-      nodeQueue.add(node.right);
+      if (notNull) {
+        output.append(level);
+      }
     }
     return "[" + output.substring(0, output.length() - 2) + "]";
   }

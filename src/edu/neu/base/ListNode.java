@@ -50,6 +50,6 @@ public class ListNode {
   }
 
   public static ListNode empty() {
-    return new ListNode(0);
+    return null;
   }
 }

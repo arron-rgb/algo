@@ -4,6 +4,9 @@ push(){
     git add .
     git commit -m "$current_date"
 #    git push -u origin main
+# todo
+# 1. add daily problems
+# 2. update comments
 }
 
 push
