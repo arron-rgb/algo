@@ -86,19 +86,10 @@ public class FrequencyOfTheMostFrequentElement {
       Arrays.sort(nums);
       int left = 1, right = nums.length;
       while (left < right) {
-        // int mid = right - (right - left) / 2;
-        // int mid = left + (right - left + 1) / 2;
-        // todo 如何判断某题取左边界还是右边界
-        // 本题取右边界 所以需要+1
-        // 如果是不加一 left 满足条件 left =2, right = 3, mid = 2
-        // left会一直卡在2
         int mid = left + (right - left) / 2;
-        //
         if (check(mid, nums, k)) {
           left = mid;
-          // left = mid + 1;
         } else {
-          // right = mid;
           right = mid - 1;
         }
       }
@@ -126,7 +117,6 @@ public class FrequencyOfTheMostFrequentElement {
   }
 
   // leetcode submit region end(Prohibit modification and deletion)
-  // todo
   class WindowSolution {
     public int maxFrequency(int[] nums, int k) {
       Arrays.sort(nums);

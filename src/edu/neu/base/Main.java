@@ -133,11 +133,11 @@
 // res = new ArrayList<>();
 // List<Integer> tmp = new ArrayList<>();
 // tmp.add(1);
-// dfs(tmp, 0, 0);
+// build(tmp, 0, 0);
 // return res;
 // }
 //
-// void dfs(List<Integer> route, int index, int total) {
+// void build(List<Integer> route, int index, int total) {
 // if (index > coins.length - 1) {
 // return;
 // }
@@ -155,7 +155,7 @@
 // }
 // for (int i = 1; i <= Math.min(maxJump, coins.length - 1); i++) {
 // route.add(index + i + 1);
-// dfs(route, index + i, total + coins[index]);
+// build(route, index + i, total + coins[index]);
 // route.remove(route.size() - 1);
 // }
 // }
@@ -243,17 +243,17 @@
 // if (root == null) {
 // return 0;
 // }
-// if (dfs(root) == 2) {
+// if (build(root) == 2) {
 // ans++;
 // }
 // return ans;
 // }
 //
-// private int dfs(TreeNode node) {
+// private int build(TreeNode node) {
 // if (node == null) {
 // return 1;
 // }
-// int left = dfs(node.left), right = dfs(node.right);
+// int left = build(node.left), right = build(node.right);
 // if (left == 2 || right == 2) {
 // ans++;
 // return 0;
@@ -476,11 +476,11 @@
 // if (root == null) {
 // return res;
 // }
-// dfs(root, 0, res);
+// build(root, 0, res);
 // return res;
 // }
 //
-// void dfs(TreeNode root, int depth, List<Integer> tmp) {
+// void build(TreeNode root, int depth, List<Integer> tmp) {
 // if (root == null) {
 // return;
 // }
@@ -489,8 +489,8 @@
 // } else {
 // tmp.set(depth, root.val > tmp.get(depth) ? root.val : tmp.get(depth));
 // }
-// dfs(root.left, depth + 1, tmp);
-// dfs(root.right, depth + 1, tmp);
+// build(root.left, depth + 1, tmp);
+// build(root.right, depth + 1, tmp);
 // }
 //
 // public int maxFrequency(int[] nums, int k) {
@@ -720,23 +720,23 @@
 //
 // public String tree2strDfs(TreeNode root) {
 // StringBuilder stringBuilder = new StringBuilder();
-// dfs(stringBuilder, root);
+// build(stringBuilder, root);
 //
 // return stringBuilder.substring(1, stringBuilder.length() - 1);
 // }
 //
-// void dfs(StringBuilder stringBuilder, TreeNode root) {
+// void build(StringBuilder stringBuilder, TreeNode root) {
 // if (root == null) {
 // return;
 // }
 // stringBuilder.append('(').append(root.val);
 // if (root.left != null) {
-// dfs(stringBuilder, root.left);
+// build(stringBuilder, root.left);
 // } else if (root.right != null) {
 // stringBuilder.append("()");
 // }
 // if (root.right != null) {
-// dfs(stringBuilder, root.right);
+// build(stringBuilder, root.right);
 // }
 // stringBuilder.append(")");
 // }
