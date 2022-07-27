@@ -1,4 +1,4 @@
-package edu.neu.algo.review.leetcode.editor.en._20220722;
+package edu.neu.algo.monotonic.leetcode.editor.en._20220724;
 
 import java.util.*;
 import edu.neu.util.InputUtil;
@@ -31,7 +31,7 @@ public class ShortestSubarrayWithSumAtLeastK {
   // 1 <= k <= 10⁹
   //
   // Related Topics Array Binary Search Queue Sliding Window Heap (Priority Queue)
-  // Prefix Sum Monotonic Queue 👍 3103 👎 79
+  // Prefix Sum Monotonic Queue 👍 3109 👎 79
 
   public static void main(String[] args) {
     Solution solution = new ShortestSubarrayWithSumAtLeastK().new Solution();

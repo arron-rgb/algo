@@ -79,7 +79,7 @@ public class JumpGameVI {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int maxResult(int[] nums, int k) {
-
+      return -1;
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

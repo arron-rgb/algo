@@ -1,6 +1,8 @@
 import edu.neu.util.InputUtil;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -12,18 +14,15 @@ public class Weekly {
   public static void main(String[] args) throws IOException {
     Weekly solution = new Weekly();
     String[] data = """
+            [1,2,4,8,16,32,64,128,256]
+            2
       """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[int[]]");
+    String[] paramTypes = InputUtil.param("[int[], int]");
     Object[] params = new Object[data.length];
     for (int i = 0; i < data.length; i++) {
       params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
     }
     int loop = data.length / paramTypes.length;
-    for (int i = 0; i < loop; i++) {
-      // int[] q = solution.smallestTrimmedNumbers((String[])params[i * paramTypes.length],
-      // (int[][])params[2 - 1 + i * paramTypes.length]);
-      // System.out.println(Arrays.toString(q));
-    }
   }
 
   static int solve(String str) {
