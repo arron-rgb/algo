@@ -98,10 +98,10 @@ public class ParallelCoursesII {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int minNumberOfSemesters(int n, int[][] relations, int k) {
+      // todo
       return -1;
     }
   }
-  // todo
   // leetcode submit region end(Prohibit modification and deletion)
 
 }

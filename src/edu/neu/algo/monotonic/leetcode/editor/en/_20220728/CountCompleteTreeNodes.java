@@ -69,7 +69,6 @@ public class CountCompleteTreeNodes {
     }
   }
 
-  // todo
   // leetcode submit region begin(Prohibit modification and deletion)
   /**
    * Definition for a binary tree node. public class TreeNode { int val; TreeNode left; TreeNode right; TreeNode() {}

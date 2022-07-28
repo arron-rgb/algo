@@ -77,7 +77,8 @@ public class NumberOfSubmatricesThatSumToTarget {
   class Solution {
     public int numSubmatrixSumTarget(int[][] nums, int target) {
       int res = 0, m = nums.length, n = nums[0].length;
-      // todo 可以当成前缀和模板 省略 常数 m-1 + n-1 + 1的空间
+      // 不可以当成前缀和模板。省略 常数 m-1 + n-1 + 1的空间
+      // 没有0，得不到单个长度
       for (int i = 0; i < m; i++) {
         for (int j = 1; j < n; j++) {
           nums[i][j] += nums[i][j - 1];
@@ -86,6 +87,7 @@ public class NumberOfSubmatricesThatSumToTarget {
       System.out.println(Arrays.deepToString(nums));
       Map<Integer, Integer> counter = new HashMap<>();
       for (int i = 0; i < n; i++) {
+        // todo 这什么题
         for (int j = i; j < n; j++) {
           counter.clear();
           counter.put(0, 1);

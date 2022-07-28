@@ -36,6 +36,9 @@ public class InputUtil {
       if ("int.class".equals(type)) {
         return Integer.parseInt(testcase);
       }
+      if ("double.class".equals(type)) {
+        return Double.parseDouble(testcase);
+      }
       if ("String.class".equals(type)) {
         return testcase.replaceAll("\"", "");
       }

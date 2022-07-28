@@ -89,7 +89,6 @@ public class MinimumGeneticMutation {
     }
   }
 
-  // todo
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     class Node {
@@ -99,8 +98,9 @@ public class MinimumGeneticMutation {
       Node(String _s) {
         s = _s;
         for (int i = 0; i < 8; i++) {
-          if (s.charAt(i) != T.charAt(i))
+          if (s.charAt(i) != T.charAt(i)) {
             val++;
+          }
         }
       }
     }
