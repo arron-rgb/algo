@@ -9,18 +9,20 @@ import java.util.*;
 
 public class Purity {
   static String path = "/Users/arronshentu/Project/21FALL/algo/src/submit.txt";
-  static String output = "/Users/arronshentu/Project/21FALL/algo/src/format.txt";
+  static String augustSubmit = "/Users/arronshentu/Project/21FALL/algo/data/augSubmit.txt";
+  static String augustOutput = "/Users/arronshentu/Project/21FALL/algo/data/augOutput.txt";
+  static String output = "/Users/arronshentu/Project/21FALL/algo/data/format.txt";
   static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
   static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMdd");
 
   public static void main(String[] args) throws IOException {
     Purity purity = new Purity();
 
-    solve();
+    solve(augustSubmit, augustOutput);
   }
 
-  private static void solve() throws IOException {
-    byte[] bytes = Files.readAllBytes(Paths.get(path));
+  private static void solve(String input, String output) throws IOException {
+    byte[] bytes = Files.readAllBytes(Paths.get(input));
     String content = new String(bytes);
     Set<String> problems = new HashSet<>();
     String[] lines = content.split("\n");
@@ -30,8 +32,12 @@ public class Purity {
     for (String line : lines) {
       line = line.substring(0, line.length() - 1);
       String[] singleDay = line.split(":");
-
-      String[] questions = singleDay[2].split(",");
+      String[] questions;
+      if (singleDay.length < 3) {
+        questions = singleDay[1].split(",");
+      } else {
+        questions = singleDay[2].split(",");
+      }
 
       String[] copy = new String[questions.length];
       for (int i = 0; i < questions.length; i++) {

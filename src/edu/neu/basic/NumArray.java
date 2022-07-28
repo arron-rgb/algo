@@ -1,4 +1,4 @@
-package edu.neu;
+package edu.neu.basic;
 
 public class NumArray {
   int[] tree;

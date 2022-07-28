@@ -1,26 +1,16 @@
 # todo
 
 1. 6.27目录下的6题题解写好
-2. 子串、子序列、字符串的题解也谢谢
-3. 二分边界取值
+2. 子串、子序列、字符串的题解也写写
 4. 01背包 遍历容量的时候正序和倒序的区别
 
-
-20220701: 已提交: 1034, 241;
-20220702: 已提交: 871, 909;
-20220703: 已提交: 1036, 556;
-20220704: 已提交: 1200, LCP 07;
-20220705: 已提交: 1765, 729;
-20220706: 已提交: 1162, 736;
-20220707: 已提交: 648;
-20220708: 已提交: 1217, 127, 2059;
-20220709: 已提交: 797, 873;
-20220710: 已提交: 741, 863;
-20220711: 未提交: 676, 752;
-20220712:
-20220713:
-20220714:
-20220715:
-20220716:
-20220717:
-20220718:
+#37 Sudoku Solver
+#187 Repeated DNA Sequences
+#188 Best Time to Buv and Sell Stock IV
+#34 Find First and Last Position of Element in Sorted Array
+#109 Convert Sorted List to Binary Search Tree
+#282 Expression Add Operators
+#222 Count Complete Tree Nodes
+#97 Interleaving String
+#164 Maximum Gap
+#60 Permutation Sequence

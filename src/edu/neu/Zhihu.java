@@ -26,6 +26,30 @@ public class Zhihu {
     }
   }
 
+  int solve(int[] nums, int k) {
+    int n = nums.length;
+    int[] prefix = new int[n + 1];
+    Deque<Integer> deque = new ArrayDeque<>();
+    int res = Integer.MIN_VALUE;
+    deque.add(0);
+    for (int i = 0; i < n; i++) {
+      prefix[i + 1] += prefix[i] + nums[i];
+      int max = prefix[deque.peekFirst()];
+      if (res < prefix[i + 1] - max) {
+        res = prefix[i + 1] - max;
+        System.out.println(Arrays.toString(Arrays.copyOfRange(nums, deque.peekFirst(), i + 1)));
+      }
+      while (!deque.isEmpty() && prefix[deque.peekLast()] >= prefix[i + 1]) {
+        deque.pollLast();
+      }
+      deque.add(i + 1);
+      if (i - (deque.peekFirst() - 1) + 1 > k) {
+        deque.pollFirst();
+      }
+    }
+    return res;
+  }
+
   public int numSubmatrixSumTarget(int[][] A, int target) {
     int res = 0, m = A.length, n = A[0].length;
     for (int i = 0; i < m; i++) {
@@ -44,27 +68,6 @@ public class Zhihu {
           res += counter.getOrDefault(cur - target, 0);
           counter.put(cur, counter.getOrDefault(cur, 0) + 1);
         }
-      }
-    }
-    return res;
-  }
-
-  int solve(int[] nums, int k) {
-    int n = nums.length;
-    int[] prefix = new int[n + 1];
-    Deque<Integer> deque = new ArrayDeque<>();
-    int res = Integer.MIN_VALUE;
-    deque.add(0);
-    for (int i = 0; i < n; i++) {
-      prefix[i + 1] += prefix[i] + nums[i];
-      int max = prefix[deque.peekFirst()];
-      res = Math.max(res, prefix[i + 1] - max);
-      while (!deque.isEmpty() && prefix[deque.peekLast()] >= prefix[i + 1]) {
-        deque.pollLast();
-      }
-      deque.add(i + 1);
-      if (i - (deque.peekFirst() - 1) + 1 > k) {
-        deque.pollFirst();
       }
     }
     return res;

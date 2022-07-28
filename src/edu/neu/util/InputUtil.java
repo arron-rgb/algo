@@ -132,7 +132,6 @@ public class InputUtil {
     int index = 1;
     while (!nodeQueue.isEmpty()) {
       TreeNode node = nodeQueue.remove();
-
       if (index == parts.length) {
         break;
       }
