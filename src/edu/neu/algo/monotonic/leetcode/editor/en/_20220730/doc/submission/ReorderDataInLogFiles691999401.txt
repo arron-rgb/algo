@@ -1,0 +1,40 @@
+  class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+      return Arrays.stream(logs).map(this::parse).sorted((l1, l2) -> {
+        if (l1.isLetter && l2.isLetter) {
+          int tmp = l1.content.compareTo(l2.content);
+          if (tmp == 0) {
+            return l1.id.compareTo(l2.id);
+          }
+          return tmp;
+        }
+        if (!l1.isLetter && !l2.isLetter) {
+          return 0;
+        } else if (l1.isLetter) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }).map(l -> l.raw).toArray(String[]::new);
+    }
+
+    Log parse(String log) {
+      Log log1 = new Log();
+      log1.raw = log;
+      log1.id = log.substring(0, log.indexOf(' '));
+      log1.content = log.substring(log.indexOf(' ') + 1);
+      log1.isLetter = !Character.isDigit(log1.content.charAt(0));
+      return log1;
+    }
+
+    class Log {
+      String id;
+      String content;
+      String raw;
+      boolean isLetter;
+    }
+
+  }
+
+//runtime:9 ms
+//memory:45.1 MB
