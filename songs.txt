@@ -16,3 +16,73 @@
 // 返回
 {"data":{"submissionList":{"lastKey":"o5wb2esft","hasNext":false,"submissions":[{"id":"334580478","timestamp":"1657345876","url":"/submissions/detail/334580478/","lang":"java","runtime":"44 ms","__typename":"SubmissionDumpNode"},{"id":"334580090","timestamp":"1657345782","url":"/submissions/detail/334580090/","lang":"java","runtime":"28 ms","__typename":"SubmissionDumpNode"},{"id":"334580000","timestamp":"1657345763","url":"/submissions/detail/334580000/","lang":"java","runtime":"42 ms","__typename":"SubmissionDumpNode"}],"__typename":"SubmissionListNode"}}}
 
+
+
+public static int boardGame(List<Integer> board, List<String> moves, int playerId) {
+    Map<String, Integer> map = new HashMap<>();
+    Map<String, Integer> score = new HashMap<>();
+    int max = board.size();
+    for (String move : moves) {
+      try {
+        boolean validateMessage = !move.contains("\\|");
+        if (!validateMessage || move.isEmpty()) {
+          System.err.println("error message: " + move);
+          continue;
+        }
+        String[] elements = move.split("\\|");
+        for (String element : elements) {
+          if (!element.contains(":")) {
+            validateMessage = false;
+            break;
+          }
+        }
+        if (!validateMessage) {
+          System.err.println("error command: " + move);
+          continue;
+        }
+        String player = elements[0].split(":")[1].trim();
+        String command = elements[1].split(":")[1].trim();
+        String value = elements[2].split(":")[1].trim();
+        if ("FORWARD".equals(command)) {
+          int tmp = map.getOrDefault(player, 0);
+          int tmpScore = score.getOrDefault(player, 0);
+          int distance = Integer.parseInt(value);
+          for (int i = 1; i <= Math.min(max - 1, distance); i++) {
+            if (tmp + i < max) {
+              tmpScore += board.get(tmp + i);
+              board.set(tmp + i, 0);
+            } else {
+              break;
+            }
+          }
+          score.put(player, tmpScore);
+          map.put(player, tmp + distance);
+        }else if("SWAP".equals(command)){
+          int firstPlace = map.getOrDefault(player, 0);
+          int secondPlace = map.getOrDefault(value, 0);
+          map.put(player, secondPlace);
+          map.put(value, firstPlace);
+        }else if("BACKWARD".equals(command)){
+          int tmp = map.getOrDefault(player, 0);
+          int tmpScore = score.getOrDefault(player, 0);
+          int distance = Integer.parseInt(value);
+          for (int i = 1; i <= Math.min(max - 1, distance); i++) {
+            if (tmp + i >= 0) {
+              tmpScore += board.get(tmp - i);
+              board.set(tmp + i, 0);
+            } else {
+              break;
+            }
+          }
+          score.put(player, tmpScore);
+          map.put(player, Math.max(tmp - distance, 0));
+        } else {
+          System.err.println("error command: " + board);
+        }
+      } catch (Exception e) {
+        System.err.println("error message: " + move);
+      }
+    }
+    return score.getOrDefault("" + playerId, 0);
+  }
+}
