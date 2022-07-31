@@ -14,10 +14,11 @@ public class Weekly {
   public static void main(String[] args) throws IOException {
     Weekly solution = new Weekly();
     String[] data = """
-            [1,2,4,8,16,32,64,128,256]
-            2
-      """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[int[], int]");
+      [2,2,3,-1]
+      0
+          1
+          """.trim().replaceAll("\n", "|").split("\\|");
+    String[] paramTypes = InputUtil.param("[int[],int,int]");
     Object[] params = new Object[data.length];
     for (int i = 0; i < data.length; i++) {
       params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
@@ -25,93 +26,118 @@ public class Weekly {
     int loop = data.length / paramTypes.length;
   }
 
-  static int solve(String str) {
-    String programmer = "programmer";
-    String head = programmer;
-    int i = 0;
-    for (; i < str.length(); i++) {
-      int pIndex = head.indexOf(str.charAt(i));
-      if (pIndex != -1) {
-        head = head.substring(0, pIndex).concat(head.substring(pIndex + 1));
-      }
-
-      if (head.length() == 0) {
-        i++;
+  public int closestMeetingNode(int[] edges, int node1, int node2) {
+    int n1 = node1, n2 = node2;
+    Set<Integer> s1 = new HashSet<>(), s2 = new HashSet<>();
+    while (true) {
+      int ans = -1;
+      if (n1 == -1 && n2 == -1) {
         break;
       }
-    }
-
-    String tail = programmer;
-
-    int j = str.length() - 1;
-    for (; j >= 0; j--) {
-      int pIndex = tail.indexOf(str.charAt(j));
-      if (pIndex != -1) {
-        tail = tail.substring(0, pIndex).concat(tail.substring(pIndex + 1));
+      if (n1 != -1) {
+        if (s2.contains(n1)) {
+          ans = n1;
+        }
+        if (!s1.add(n1)) {
+          n1 = -1;
+          continue;
+        }
+        n1 = edges[n1];
       }
-
-      if (tail.length() == 0) {
-        j--;
-        break;
+      if (n2 != -1) {
+        if (s1.contains(n2)) {
+          ans = ans >= 0 ? Math.min(n2, ans) : n2;
+        }
+        if (!s2.add(n2)) {
+          n2 = -1;
+          continue;
+        }
+        n2 = edges[n2];
       }
-    }
-
-    return j - i + 1;
-  }
-
-  public static String gamingArray(List<Integer> arr) {
-    int count = 0;
-    int max = 0;
-    for (int number : arr) {
-      if (max < number) {
-        max = number;
-        count++;
-      }
-    }
-    return count % 2 == 0 ? "ANDY" : "BOB";
-  }
-
-  int minimumNumbers(int num, int k) {
-    int i;
-    if (num == 0) {
-      return 0;
-    }
-    for (i = 1; i <= 10; i++) {
-      if ((num >= i * k) && ((num - i * k) % 10 == 0)) {
-        return i;
+      if (ans != -1) {
+        return ans;
       }
     }
     return -1;
   }
 
-  public int longestSubsequence(String s, int k) {
-    char[] chars = s.toCharArray();
-    int n = chars.length;
-    int[] z = new int[n + 1];
-    for (int i = 0; i < n; i++) {
-      z[i + 1] = z[i] + (chars[i] == '0' ? 1 : 0);
-    }
-    int ans = z[n];
-    char[] h = Integer.toBinaryString(k).toCharArray();
-    int m = h.length;
-    for (int i = 0; i < n; i++) {
-      if (chars[i] == '1') {
-        ans = Math.max(ans, z[i] + Math.min(m - 1, n - i));
-        int p = 0;
-        for (int j = i; j < n && p < m; j++) {
-          if (h[p] == '1' && chars[j] == '0') {
-            p = Math.min(m, p + (n - j));
-            break;
-          }
-          if (h[p] == '0' && chars[j] == '1') {
-          } else {
-            p++;
-          }
-        }
-        ans = Math.max(ans, z[i] + p);
-      }
+  public int longestCycle(int[] e) {
+    int n = e.length, ans = -1;
+    int[] v = new int[n];
+    for (int i = 0; i < n; ++i) {
+      Map<Integer, Integer> map = new HashMap<>();
+      ans = Math.max(bfs(e, v, i, map, 0), ans);
     }
     return ans;
   }
 
+  int bfs(int[] e, int[] v, int idx, Map<Integer, Integer> map, int level) {
+    if (idx == -1) {
+      return -1;
+    }
+    if (v[idx] == 0) {
+      v[idx] = 1;
+      map.put(idx, level);
+      return bfs(e, v, e[idx], map, 1 + level);
+    } else {
+      if (map.containsKey(idx)) {
+        return level - map.get(idx);
+      } else {
+        return -1;
+      }
+    }
+  }
 }
+
+// class NumArray {
+//
+// public NumArray(int[] nums) {
+//
+// }
+//
+// public void update(int index, int val) {
+//
+// }
+//
+// public int sumRange(int left, int right) {
+//
+// }
+//
+// int lowbit(int n) {
+// return n & -n;
+// }
+//
+// class Array {
+// int n;
+// int[] tree;
+// int[] nums;
+//
+// public Array(int[] nums) {
+// this.n = nums.length;
+// this.tree = new int[n + 1];
+// this.nums = nums;
+// for (int i = 0; i < n; i++) {
+// add(i + 1, nums[i]);
+// }
+// }
+//
+// void add(int index, int value) {
+// for (int i = 0; i < n; i += lowbit(i)) {
+// tree[i] += value;
+// }
+// }
+//
+// int query(int x) {
+// int tmp = 0;
+// for (int i = x; i >= 0; i -= lowbit(i)) {
+// tmp += tree[i];
+// }
+// return tmp;
+// }
+//
+// void update(int index, int value) {
+// add(index + 1, value - nums[i]);
+// nums[i] = value;
+// }
+// }
+// }
