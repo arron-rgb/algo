@@ -1,143 +1,73 @@
+import edu.neu.base.TreeNode;
 import edu.neu.util.InputUtil;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.IntStream;
 
 /**
  * @author arronshentu
  */
 public class Weekly {
 
+  public int longestIdealString(String s, int k) {
+    int[] count = new int[26];
+    int max = 0;
+    for (char c : s.toCharArray()) {
+      for (int i = Math.max('a', c - k) - 'a'; i <= Math.min('z', c + k - 'a'); i++) {
+        count[c - 'a'] = Math.max(count[c - 'a'], count[i]);
+      }
+      max = Math.max(max, ++count[c - 'a']);
+    }
+    System.out.println(Arrays.toString(count));
+    return max;
+  }
+
+  public boolean validPartition(int[] nums) {
+    int n = nums.length;
+    boolean[] dp = new boolean[n + 1];
+    dp[0] = true;
+    dp[2] = nums[0] == nums[1];
+    for (int i = 2; i < n; i++) {
+      dp[i + 1] =
+        (nums[i] == nums[i - 1] && dp[i - 1]) || (nums[i] == nums[i - 1] && nums[i] == nums[i - 2] && dp[i - 2])
+          || (nums[i] == nums[i - 1] + 1 && nums[i - 1] == nums[i - 2] + 1 && dp[i - 2]);
+    }
+    return dp[n];
+  }
+
+  public long minimumReplacement(int[] nums) {
+    int n = nums.length;
+    int min = nums[n - 1];
+    long count = 0;
+    for (int i = n - 1; i >= 0; i--) {
+      if (nums[i] <= min) {
+        min = nums[i];
+      } else {
+        int div = (nums[i] + min - 1) / min;
+        count += div - 1;
+        min = nums[i] / div;
+      }
+    }
+    return count;
+  }
+
   public static void main(String[] args) throws IOException {
     Weekly solution = new Weekly();
     String[] data = """
-      [2,2,3,-1]
-      0
-          1
-          """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[int[],int,int]");
+      10
+      [[4,1],[1,3],[1,5],[0,5],[3,6],[8,4],[5,7],[6,9],[3,2]]
+      [2,7]
+           """.trim().replaceAll("\n", "|").split("\\|");
+    String[] paramTypes = InputUtil.param("[int,int[][],int[]]");
     Object[] params = new Object[data.length];
-    for (int i = 0; i < data.length; i++) {
-      params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
-    }
+    // for (int i = 0; i < data.length; i++) {
+    // params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
+    // }
     int loop = data.length / paramTypes.length;
+    for (int i = 0; i < loop; i++) {
+      // int q = solution.solve((int[])params[i * paramTypes.length], (int)params[2 - 1 + i * paramTypes.length]);
+      // System.out.println(q);
+    }
   }
 
-  public int closestMeetingNode(int[] edges, int node1, int node2) {
-    int n1 = node1, n2 = node2;
-    Set<Integer> s1 = new HashSet<>(), s2 = new HashSet<>();
-    while (true) {
-      int ans = -1;
-      if (n1 == -1 && n2 == -1) {
-        break;
-      }
-      if (n1 != -1) {
-        if (s2.contains(n1)) {
-          ans = n1;
-        }
-        if (!s1.add(n1)) {
-          n1 = -1;
-          continue;
-        }
-        n1 = edges[n1];
-      }
-      if (n2 != -1) {
-        if (s1.contains(n2)) {
-          ans = ans >= 0 ? Math.min(n2, ans) : n2;
-        }
-        if (!s2.add(n2)) {
-          n2 = -1;
-          continue;
-        }
-        n2 = edges[n2];
-      }
-      if (ans != -1) {
-        return ans;
-      }
-    }
-    return -1;
-  }
-
-  public int longestCycle(int[] e) {
-    int n = e.length, ans = -1;
-    int[] v = new int[n];
-    for (int i = 0; i < n; ++i) {
-      Map<Integer, Integer> map = new HashMap<>();
-      ans = Math.max(bfs(e, v, i, map, 0), ans);
-    }
-    return ans;
-  }
-
-  int bfs(int[] e, int[] v, int idx, Map<Integer, Integer> map, int level) {
-    if (idx == -1) {
-      return -1;
-    }
-    if (v[idx] == 0) {
-      v[idx] = 1;
-      map.put(idx, level);
-      return bfs(e, v, e[idx], map, 1 + level);
-    } else {
-      if (map.containsKey(idx)) {
-        return level - map.get(idx);
-      } else {
-        return -1;
-      }
-    }
-  }
 }
-
-// class NumArray {
-//
-// public NumArray(int[] nums) {
-//
-// }
-//
-// public void update(int index, int val) {
-//
-// }
-//
-// public int sumRange(int left, int right) {
-//
-// }
-//
-// int lowbit(int n) {
-// return n & -n;
-// }
-//
-// class Array {
-// int n;
-// int[] tree;
-// int[] nums;
-//
-// public Array(int[] nums) {
-// this.n = nums.length;
-// this.tree = new int[n + 1];
-// this.nums = nums;
-// for (int i = 0; i < n; i++) {
-// add(i + 1, nums[i]);
-// }
-// }
-//
-// void add(int index, int value) {
-// for (int i = 0; i < n; i += lowbit(i)) {
-// tree[i] += value;
-// }
-// }
-//
-// int query(int x) {
-// int tmp = 0;
-// for (int i = x; i >= 0; i -= lowbit(i)) {
-// tmp += tree[i];
-// }
-// return tmp;
-// }
-//
-// void update(int index, int value) {
-// add(index + 1, value - nums[i]);
-// nums[i] = value;
-// }
-// }
-// }

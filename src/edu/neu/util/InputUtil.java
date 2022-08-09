@@ -24,6 +24,9 @@ public class InputUtil {
       if ("ListNode.class".equals(type)) {
         return stringToList(testcase);
       }
+      if ("char[][].class".equals(type)) {
+        return stringToCharArrays(testcase);
+      }
       if ("int[][].class".equals(type)) {
         return stringToArrays(testcase);
       }
@@ -98,10 +101,45 @@ public class InputUtil {
     return output;
   }
 
+  public static char[] stringToCharArray(String input) {
+    input = input.trim();
+    if (input.startsWith("[") && input.endsWith("]")) {
+      input = input.substring(1, input.length() - 1);
+    }
+    if (input.length() == 0) {
+      return new char[0];
+    }
+
+    String[] parts = input.split(",");
+    char[] output = new char[parts.length];
+    for (int index = 0; index < parts.length; index++) {
+      String part = parts[index].trim();
+      output[index] = part.charAt(1);
+    }
+    return output;
+  }
+
   public static String[] stringToStringArray(String s) {
     s = process(s, "[", 1);
     String[] split = s.split(",");
     return Arrays.stream(split).map(t -> t.replaceAll("\"", "")).toList().toArray(new String[0]);
+  }
+
+  public static char[][] stringToCharArrays(String s) {
+    // [[1,2],[1,2],[1,2]]
+    s = process(s, "[[", 2);
+    if ("[]".equals(s)) {
+      return new char[0][0];
+    }
+    String[] split = s.split("],\\[");
+    List<char[]> res = new ArrayList<>();
+    for (String s1 : split) {
+      res.add(stringToCharArray(s1));
+    }
+    if (s.charAt(s.length() - 1) == '[') {
+      res.add(new char[0]);
+    }
+    return res.toArray(new char[0][]);
   }
 
   public static int[][] stringToArrays(String s) {
