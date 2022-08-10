@@ -1,0 +1,9 @@
+class Solution {
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+        int states = minutesToTest / minutesToDie + 1;
+        int pigs = (int) Math.ceil(Math.log(buckets) / Math.log(states));
+        return pigs;
+    }
+}
+//runtime:0 ms
+//memory:41.7 MB

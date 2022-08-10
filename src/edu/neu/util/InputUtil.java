@@ -30,6 +30,13 @@ public class InputUtil {
       if ("int[][].class".equals(type)) {
         return stringToArrays(testcase);
       }
+      if ("char.class".equals(type)) {
+        if ("".equals(testcase)) {
+          return ' ';
+        } else {
+          return testcase.replaceAll("\"", "").charAt(0);
+        }
+      }
       if ("int[].class".equals(type)) {
         return stringToArray(testcase);
       }

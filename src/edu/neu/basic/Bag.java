@@ -42,7 +42,7 @@ public class Bag {
     int[] dp = new int[size + 1];
     // 遍历顺序：先遍历物品，再遍历背包容量
     for (int i = 0; i < n; i++) {
-      // 倒序遍历是为了保证物品i只被放入一次！。但如果一旦正序遍历了，那么物品0就会被重复加入多次！
+      // 倒序遍历是为了保证物品i只被放入一次！但如果一旦正序遍历了，那么物品0就会被重复加入多次！
       for (int j = size; j >= weights[i]; j--) {
         dp[j] = Math.max(dp[j], dp[j - weights[i]] + values[i]);
       }
