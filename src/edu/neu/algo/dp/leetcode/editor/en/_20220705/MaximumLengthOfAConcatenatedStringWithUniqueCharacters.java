@@ -1,8 +1,6 @@
 package edu.neu.algo.dp.leetcode.editor.en._20220705;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import edu.neu.util.InputUtil;
 
@@ -62,55 +60,99 @@ public class MaximumLengthOfAConcatenatedStringWithUniqueCharacters {
   public static void main(String[] args) {
     Solution solution = new MaximumLengthOfAConcatenatedStringWithUniqueCharacters().new Solution();
     String[] data = """
-          ["un","iq","ue"]
-      ["cha","r","act","ers"]
-      ["abcdefghijklmnopqrstuvwxyz"]
+      ["John(15)","Jon(12)","Chris(13)","Kris(4)","Christopher(19)"]
+      ["(Jon,John)","(John,Johnny)","(Chris,Kris)","(Chris,Christopher)"]
           """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[list<String>]");
+    String[] paramTypes = InputUtil.param("[String[], String[]]");
     Object[] params = new Object[data.length];
     for (int i = 0; i < data.length; i++) {
       params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
     }
     int loop = data.length / paramTypes.length;
     for (int i = 0; i < loop; i++) {
-      int q = solution.maxLength((List<String>)params[1 - 1 + i * paramTypes.length]);
-      System.out.println(q);
+      String[] q = solution.trulyMostPopular((String[])params[1 - 1 + i * paramTypes.length],
+        (String[])params[2 - 1 + i * paramTypes.length]);
+      System.out.println(Arrays.toString(q));
     }
   }
 
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
-    int max = 0;
-
-    public int maxLength(List<String> arr) {
-      dfs(0, arr, "");
-      return max;
+    public String[] trulyMostPopular(String[] names, String[] synonyms) {
+      parent = new HashMap<>();
+      init(synonyms);
+      count = new HashMap<>();
+      for (String name : names) {
+        String[] split = name.split("\\(");
+        String number = split[1].substring(0, split[1].length() - 1);
+        String p = getParent(name);
+        count.put(p, count.getOrDefault(p, 0) + Integer.parseInt(number));
+      }
+      final String[] res = new String[count.size()];
+      int i = 0;
+      for (Map.Entry<String, Integer> entry : count.entrySet()) {
+        String k = entry.getKey();
+        Integer v = entry.getValue();
+        String stringBuilder = k + "(" + v + ")";
+        res[i++] = stringBuilder;
+      }
+      return res;
     }
 
-    public void dfs(int index, List<String> arr, String str) {
-      if (!validate(str)) {
-        return;
-      }
-      if (str.length() > max) {
-        max = str.length();
-      }
-      for (int i = index; i < arr.size(); i++) {
-        dfs(i + 1, arr, str + arr.get(i));
+    Map<String, Integer> count;
+    Map<String, String> parent;
+
+    void init(String[] synonyms) {
+      for (String s : synonyms) {
+        s = s.substring(1, s.length() - 1);
+        String[] names = s.split(",");
+        union(names[0], names[1]);
       }
     }
 
-    boolean validate(String s) {
-      Set<Character> set = new HashSet<>();
-
-      for (char ch : s.toCharArray()) {
-        if (set.contains(ch)) {
-          return false;
-        }
-        set.add(ch);
+    String getParent(String child) {
+      String p = parent.getOrDefault(child, child);
+      while (!p.equals(parent.getOrDefault(p, p))) {
+        // 最后结果是p==child
+        p = parent.getOrDefault(p, p);
       }
-      return true;
+      return p;
     }
+
+    void union(String c, String b) {
+      String smaller = c.compareTo(b) > 0 ? b : c;
+      String bigger = b.equals(smaller) ? c : b;
+      parent.put(getParent(bigger), getParent(smaller));
+    }
+
   }
   // leetcode submit region end(Prohibit modification and deletion)
 
+}
+
+class Solution {
+  public List<Integer> findClosestElements(int[] arr, int k, int x) {
+    int right = binarySearch(arr, x);
+    int left = right - 1;
+    while (k-- > 0) {
+      if (left < 0) {
+        right++;
+      } else if (right >= arr.length) {
+        left--;
+      } else if (x - arr[left] <= arr[right] - x) {
+        left--;
+      } else {
+        right++;
+      }
+    }
+    List<Integer> ans = new ArrayList<>();
+    for (int i = left + 1; i < right; i++) {
+      ans.add(arr[i]);
+    }
+    return ans;
+  }
+
+  public int binarySearch(int[] arr, int x) {
+    return -1;
+  }
 }

@@ -232,7 +232,7 @@ class Solution {
 
 ```java
 // You are given an array of integers stones where stones[i] is the weight of
-// the iᵗʰ stone.  
+// the iᵗʰ stone.
 // At the end of the game, there is at most one stone left.
 //
 // Return the smallest possible weight of the left stone. If there are no
@@ -415,6 +415,7 @@ class Solution {
         }
       }
     }
+
     return dp[amount];
   }
 }

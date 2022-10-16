@@ -3,6 +3,7 @@ package edu.neu.algo.leetcode.editor.en._20220707;
 import edu.neu.util.InputUtil;
 
 public class ShuffleTheArray {
+
   // 1470
   // Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2
   // ,...,yn].
@@ -96,4 +97,5 @@ public class ShuffleTheArray {
   record Pair(int x, int y) {
     public static String name;
   }
+
 }

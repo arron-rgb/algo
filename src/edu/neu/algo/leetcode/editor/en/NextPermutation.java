@@ -1,4 +1,4 @@
-package edu.neu.algo.leetcode.editor.en._20220417;
+package edu.neu.algo.leetcode.editor.en;
 
 public class NextPermutation{
 

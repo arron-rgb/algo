@@ -51,8 +51,6 @@ public class BinarySearch {
     int left = 0, right = nums.length - 1;
     while (left <= right) {
       int mid = (left + right) / 2;
-      // 找左边界，假设target属于 [a1, b1]
-      // 则mid必在[a1,b1]中，所以范围缩小至[a1, mid]
       if (target > nums[mid]) {
         left = mid + 1;
       } else if (target < nums[mid]) {

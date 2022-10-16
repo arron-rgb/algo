@@ -1,6 +1,8 @@
 package edu.neu.algo.review.leetcode.editor.en._20220717;
 
 import java.util.*;
+
+import edu.neu.base.Pair;
 import edu.neu.util.InputUtil;
 
 public class NumberOfSubmatricesThatSumToTarget {
@@ -103,5 +105,51 @@ public class NumberOfSubmatricesThatSumToTarget {
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
+
+  public int subarraySum(int[] nums, int k) {
+    int count = 0, pre = 0;
+    HashMap<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    for (int num : nums) {
+      pre += num;
+      if (map.containsKey(pre - k)) {
+        count += map.get(pre - k);
+      }
+      map.put(pre, map.getOrDefault(pre, 0) + 1);
+    }
+    return count;
+  }
+
+  public int getLengthOfOptimalCompression(String s, int k) {
+    // dp[i][k]: the minimum length for s[:i] with at most k deletion.
+    int n = s.length();
+    int[][] dp = new int[110][110];
+    for (int i = 0; i <= n; i++) {
+      for (int j = 0; j <= n; j++) {
+        dp[i][j] = 9999;
+      }
+    }
+    // for (int[] i : dp) Arrays.fill(i, n); // this is a bit slower (100ms)
+    dp[0][0] = 0;
+    for (int i = 1; i <= n; i++) {
+      for (int j = 0; j <= k; j++) {
+        int cnt = 0, del = 0;
+        for (int l = i; l >= 1; l--) { // keep s[i], concat the same, remove the different
+          if (s.charAt(l - 1) == s.charAt(i - 1)) {
+            cnt++;
+          } else {
+            del++;
+          }
+          if (j - del >= 0) {
+            dp[i][j] = Math.min(dp[i][j], dp[l - 1][j - del] + 1 + (cnt >= 100 ? 3 : cnt >= 10 ? 2 : cnt >= 2 ? 1 : 0));
+          }
+        }
+        if (j > 0) {
+          dp[i][j] = Math.min(dp[i][j], dp[i - 1][j - 1]);
+        }
+      }
+    }
+    return dp[n][k];
+  }
 
 }
