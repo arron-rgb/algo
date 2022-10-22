@@ -4,8 +4,40 @@ package edu.neu.basic;
  * @author arronshentu
  */
 public class BinarySearch {
+  class Solution {
+    public int[] searchRange(int[] nums, int target) {
+      if (nums.length == 0) {
+        return new int[] {-1, -1};
+      }
+      int left = leftBound(nums, target);
+      if (left == -1) {
+        return new int[] {-1, -1};
+      }
+      int right = leftBound(nums, target + 1);
+      if (right == -1) {
+        return new int[] {left, nums.length - 1};
+      }
+      System.out.println(right);
+      return new int[] {left, right - 1};
+    }
+
+    int leftBound(int[] nums, int target) {
+      int left = 0, right = nums.length - 1;
+      while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] >= target) {
+          right = mid;
+        } else {
+          left = mid + 1;
+        }
+      }
+      return nums[left] == target ? left : -1;
+    }
+  }
 
   public static void main(String[] args) {
+    Solution solution = new BinarySearch().new Solution();
+    solution.searchRange(new int[] {5, 7, 7, 8, 8, 10}, 8);
     int[] nums = {1, 2, 3, 3, 3, 4, 5, 6, 7};
     System.out.println("------binary search [right boundary]------");
     System.out.println(rightBoundary(nums, 1));

@@ -79,8 +79,6 @@ public class NumberOfSubmatricesThatSumToTarget {
   class Solution {
     public int numSubmatrixSumTarget(int[][] nums, int target) {
       int res = 0, m = nums.length, n = nums[0].length;
-      // 不可以当成前缀和模板。省略 常数 m-1 + n-1 + 1的空间
-      // 没有0，得不到单个长度
       for (int i = 0; i < m; i++) {
         for (int j = 1; j < n; j++) {
           nums[i][j] += nums[i][j - 1];
@@ -89,7 +87,6 @@ public class NumberOfSubmatricesThatSumToTarget {
       System.out.println(Arrays.deepToString(nums));
       Map<Integer, Integer> counter = new HashMap<>();
       for (int i = 0; i < n; i++) {
-        // todo 这什么题
         for (int j = i; j < n; j++) {
           counter.clear();
           counter.put(0, 1);
@@ -105,20 +102,6 @@ public class NumberOfSubmatricesThatSumToTarget {
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)
-
-  public int subarraySum(int[] nums, int k) {
-    int count = 0, pre = 0;
-    HashMap<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);
-    for (int num : nums) {
-      pre += num;
-      if (map.containsKey(pre - k)) {
-        count += map.get(pre - k);
-      }
-      map.put(pre, map.getOrDefault(pre, 0) + 1);
-    }
-    return count;
-  }
 
   public int getLengthOfOptimalCompression(String s, int k) {
     // dp[i][k]: the minimum length for s[:i] with at most k deletion.

@@ -72,7 +72,6 @@ public class PoorPigs {
     }
   }
 
-  // todo
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {

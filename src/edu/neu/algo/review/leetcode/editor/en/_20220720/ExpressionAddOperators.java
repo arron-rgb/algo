@@ -74,36 +74,36 @@ public class ExpressionAddOperators {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     List<String> ans = new ArrayList<>();
-    String s;
+    String num;
     int n, t;
 
     public List<String> addOperators(String num, int target) {
-      s = num;
-      n = s.length();
+      this.num = num;
+      n = this.num.length();
       t = target;
       dfs(0, 0, 0, "");
       return ans;
     }
 
-    void dfs(int index, long prev, long cur, String ss) {
+    void dfs(int index, long prev, long cur, String temp) {
       if (index == n) {
         if (cur == t) {
-          ans.add(ss);
+          ans.add(temp);
         }
         return;
       }
       for (int i = index; i < n; i++) {
-        if (i != index && s.charAt(index) == '0') {
+        if (i != index && this.num.charAt(index) == '0') {
           break;
         }
-        long next = Long.parseLong(s.substring(index, i + 1));
+        long next = Long.parseLong(this.num.substring(index, i + 1));
         if (index == 0) {
           dfs(i + 1, next, next, "" + next);
         } else {
-          dfs(i + 1, next, cur + next, ss + "+" + next);
-          dfs(i + 1, -next, cur - next, ss + "-" + next);
+          dfs(i + 1, next, cur + next, temp + "+" + next);
+          dfs(i + 1, -next, cur - next, temp + "-" + next);
           long x = prev * next;
-          dfs(i + 1, x, cur - prev + x, ss + "*" + next);
+          dfs(i + 1, x, cur - prev + x, temp + "*" + next);
         }
       }
     }
