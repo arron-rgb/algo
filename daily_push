@@ -2,7 +2,7 @@
 push(){
     current_date=$(date +%F-%T)
     git add .
-    git commit -m "$current_date"
+    git commit -m "二叉树 $current_date"
     git push -u origin main
 }
 
