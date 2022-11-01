@@ -1,5 +1,7 @@
 package edu.neu.basic;
 
+import edu.neu.base.TreeNode;
+
 /**
  * @author arronshentu
  */

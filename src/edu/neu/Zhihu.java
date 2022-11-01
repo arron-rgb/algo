@@ -235,23 +235,6 @@ public class Zhihu {
     return (int)prod;
   }
 
-  class MyCalendar {
-    TreeMap<Integer, Integer> map;
-
-    public MyCalendar() {
-      map = new TreeMap<>();
-    }
-
-    public boolean book(int start, int end) {
-      Integer pre = map.floorKey(start), next = map.ceilingKey(start);
-      if ((pre == null || map.get(pre) <= start) && (next == null || end <= next)) {
-        map.put(start, end);
-        return true;
-      }
-      return false;
-    }
-  }
-
   static int solve(String str) {
     String programmer = "programmer";
     String head = programmer;

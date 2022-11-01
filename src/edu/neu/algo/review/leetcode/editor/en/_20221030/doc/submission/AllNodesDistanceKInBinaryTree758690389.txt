@@ -1,0 +1,47 @@
+  /**
+   * Definition for a binary tree node. public class TreeNode { int val; TreeNode left; TreeNode right; TreeNode(int x)
+   * { val = x; } }
+   */
+  class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+      Map<Integer, List<Integer>> graph = new HashMap<>();
+      buildGraph(root, graph);
+      Deque<Integer> deque = new ArrayDeque<>();
+      deque.add(target.val);
+      Set<Integer> visited = new HashSet<>();
+      visited.add(target.val);
+      while (!deque.isEmpty() && k-- > 0) {
+        int size = deque.size();
+        for (int i = 0; i < size; i++) {
+          int next = deque.remove();
+          List<Integer> edges = graph.getOrDefault(next, new ArrayList<>());
+          for (Integer edge : edges) {
+            if (!visited.contains(edge)) {
+              visited.add(edge);
+              deque.add(edge);
+            }
+          }
+        }
+      }
+      return new ArrayList<>(deque);
+    }
+
+    void buildGraph(TreeNode root, Map<Integer, List<Integer>> graph) {
+      if (root == null) {
+        return;
+      }
+      if (root.left != null) {
+        graph.computeIfAbsent(root.val, t -> new ArrayList<>()).add(root.left.val);
+        graph.computeIfAbsent(root.left.val, t -> new ArrayList<>()).add(root.val);
+      }
+      if (root.right != null) {
+        graph.computeIfAbsent(root.val, t -> new ArrayList<>()).add(root.right.val);
+        graph.computeIfAbsent(root.right.val, t -> new ArrayList<>()).add(root.val);
+      }
+      buildGraph(root.left, graph);
+      buildGraph(root.right, graph);
+    }
+  }
+
+//runtime:19 ms
+//memory:44.4 MB

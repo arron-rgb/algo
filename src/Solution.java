@@ -1,57 +1,59 @@
-import java.io.*;
+import edu.neu.base.TreeNode;
+import edu.neu.util.InputUtil;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
 
 /** * @author arronshentu */
 public class Solution {
   public static void main(String[] args) {
-    // System.out.println(ChronoUnit.DAYS.between(LocalDate.of(2022, 12, 17), LocalDate.now()));
+    System.out.println(ChronoUnit.DAYS.between(LocalDate.of(2022, 12, 17), LocalDate.now()));
     Solution solution = new Solution();
-    solution.solution(new int[] {25, 35, 872, 228, 53, 278, 872});
-    solution.letterCasePermutation("1a2b");
+    // solution.solution(new int[] {25, 35, 872, 228, 53, 278, 872});
+    // solution.letterCasePermutation("1a2b");
+    Codec codec = solution.new Codec();
+    String serialize = codec.serialize(InputUtil.stringToTree("[1,2,3,null,null,4,5,6,7]"));
+    System.out.println(serialize);
+    TreeNode deserialize = codec.deserialize(serialize);
+    System.out.println(deserialize);
   }
 
-  public List<String> letterCasePermutation(String s) {
-    List<String> res = new ArrayList<>();
-    dfs(res, s.toCharArray(), 0);
-    return res;
-  }
+  public class Codec {
 
-  public List<List<Integer>> subsets(int[] nums) {
-    List<List<Integer>> res = new ArrayList<>();
-    dfs(res, new ArrayList<>(), nums, 0);
-    return res;
-  }
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+      StringBuilder s = new StringBuilder();
+      dfs(s, root);
+      return s.substring(0, s.length() - 1);
+    }
 
-  void dfs(List<List<Integer>> res, List<Integer> tmp, int[] nums, int i) {
-    if (tmp.size() == nums.length) {
-      return;
+    private void dfs(StringBuilder s, TreeNode root) {
+      if (root == null) {
+        s.append("null").append(",");
+        return;
+      }
+      s.append(root.val).append(",");
+      dfs(s, root.left);
+      dfs(s, root.right);
     }
-    for (int j = i + 1, n = nums.length; j < n; j++) {
-      tmp.add(nums[j]);
-      // 要
-      dfs(res, tmp, nums, j);
-      tmp.remove(nums[j]);
-      // 不要
-      dfs(res, tmp, nums, j);
-    }
-  }
 
-  void dfs(List<String> res, char[] chars, int i) {
-    if (i >= chars.length) {
-      res.add(new String(chars));
-      return;
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+      // 1,2,null,null,3,4,null,null,5,null,null
+      String[] split = data.split(",");
+      return deserialize(split, 0);
     }
-    if (Character.isLetter(chars[i])) {
-      chars[i] ^= 1 << 5;
-      dfs(res, chars, i + 1);
+
+    private TreeNode deserialize(String[] value, int mid) {
+      if (mid >= value.length || "null".equals(value[mid])) {
+        return null;
+      }
+      TreeNode root = new TreeNode(Integer.parseInt(value[mid]));
+      root.left = deserialize(value, mid * 2 + 1);
+      root.right = deserialize(value, mid * 2 + 2);
+      return root;
     }
-    chars[i] ^= 1 << 5;
-    dfs(res, chars, i + 1);
   }
 
   long solution(int[] a) {
@@ -69,97 +71,6 @@ public class Solution {
       res += nCr;
     }
     return res;
-  }
-
-  int solve(int[][] matrix, int length, int breath) {
-    int maxSum = 0;
-    for (int x = 0; x < matrix.length; x++) {
-      for (int y = 0; y < matrix[x].length; y++) {
-        int sum = 0;
-        boolean canBeRectangle = true;
-        for (int lengthMoves = 0; lengthMoves < length && canBeRectangle; lengthMoves++) {
-          // -- Both increase by one
-          // each time.
-          int columnNoOfStartingPointOfDiagonal = x + lengthMoves;
-          int rowNoOfStartingPointOfDiagonal = y + lengthMoves;
-          for (int breathMoves = 0; breathMoves < breath && canBeRectangle; breathMoves++) {
-            if (columnNoOfStartingPointOfDiagonal - breathMoves >= 0
-              && columnNoOfStartingPointOfDiagonal - breathMoves < matrix[0].length
-              && rowNoOfStartingPointOfDiagonal + breathMoves < matrix.length) {
-              sum +=
-                matrix[rowNoOfStartingPointOfDiagonal + breathMoves][columnNoOfStartingPointOfDiagonal - breathMoves];
-            } else {
-              canBeRectangle = false;
-            }
-          }
-          if (lengthMoves < length - 1) {
-            columnNoOfStartingPointOfDiagonal = x + lengthMoves;
-            rowNoOfStartingPointOfDiagonal = y + lengthMoves + 1;
-            for (int breathMoves = 0; breathMoves < breath - 1 && canBeRectangle; breathMoves++) {
-              if (columnNoOfStartingPointOfDiagonal - breathMoves >= 0
-                && rowNoOfStartingPointOfDiagonal + breathMoves < matrix.length) {
-                sum +=
-                  matrix[rowNoOfStartingPointOfDiagonal + breathMoves][columnNoOfStartingPointOfDiagonal - breathMoves];
-              } else {
-                canBeRectangle = false;
-              }
-            }
-          }
-        }
-        if (canBeRectangle) {
-          maxSum = Math.max(maxSum, sum);
-        }
-      }
-    }
-    return maxSum;
-  }
-
-  class MaxStack {
-    Deque<Integer> deque;
-    Deque<Integer> max;
-
-    public MaxStack() {
-      max = new ArrayDeque<>();
-      deque = new ArrayDeque<>();
-    }
-
-    public void push(int x) { // [1,4,2,5,5] // [1,4,4,5,5]
-      deque.addLast(x);
-      int maxValue = max.isEmpty() ? x : Math.max(max.peekLast(), x);
-      max.addLast(maxValue);
-    }
-
-    public int pop() {
-      max.pollLast();
-      return deque.pollLast();
-    }
-
-    public int top() {
-      return deque.peekLast();
-    }
-
-    public int peekMax() {
-      return max.peekLast();
-    }
-
-    public int popMax() {
-      Deque<Integer> helper = new ArrayDeque<>();
-      int res = max.peekLast();
-      if (Objects.equals(res, deque.peekLast())) {
-        max.pollLast();
-        return deque.pollLast();
-      }
-      while (!deque.isEmpty() && !Objects.equals(res, deque.peekLast())) {
-        Integer integer = deque.pollLast();
-        max.pollLast();
-        helper.addLast(integer);
-      }
-      pop();
-      while (!helper.isEmpty()) {
-        push(helper.pollLast());
-      }
-      return res;
-    }
   }
 
   public int minimumCost(int n, int[][] connections) {

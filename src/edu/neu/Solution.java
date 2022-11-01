@@ -88,19 +88,6 @@ public class Solution {
     return sum;
   }
 
-  public int subarraySum(int[] nums, int k) {
-    int[] preSum = getPreSum(nums);
-    int count = 0;
-    for (int i = 0; i < nums.length; i++) {
-      for (int j = i; j < nums.length; j++) {
-        if (preSum[j + 1] - preSum[i] == k) {
-          count++;
-        }
-      }
-    }
-    return count;
-  }
-
   public int minSumOfLengths(int[] arr, int target) {
     Map<Integer, Integer> map = new HashMap<>();
     map.put(0, 0);
@@ -211,51 +198,6 @@ public class Solution {
       }
     }
     return res;
-  }
-
-  class Codec {
-    public String serialize(Node root) {
-      if (root == null) {
-        return "";
-      }
-
-      StringBuilder builder = new StringBuilder();
-      dfsEnocde(root, builder);
-      return builder.toString();
-    }
-
-    private void dfsEnocde(Node root, StringBuilder builder) {
-      builder.append(root.val).append(" ");
-      builder.append(root.children.size()).append(" ");
-      for (int i = 0; i < root.children.size(); i++) {
-        dfsEnocde(root.children.get(i), builder);
-      }
-    }
-
-    int i;
-
-    public Node deserialize(String data) {
-      if (data == null || data.isEmpty()) {
-        return null;
-      }
-      String[] arr = data.split(" ");
-      i = 0;
-      return decode(arr);
-    }
-
-    private Node decode(String[] arr) {
-      if (i == arr.length) {
-        return null;
-      }
-
-      Node root = new Node(Integer.parseInt(arr[i++]), new ArrayList<>());
-      int size = Integer.parseInt(arr[i++]);
-      for (int j = 0; j < size; j++) { // 如果size == 0，则跳过，直接返回root
-        Node child = decode(arr);
-        root.children.add(child);
-      }
-      return root;
-    }
   }
 
   public String smallestSubsequence(String s) {

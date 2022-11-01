@@ -1,0 +1,50 @@
+  class Solution {
+    List<Integer> res;
+    TreeNode targetFather;
+
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+      res = new ArrayList<>();
+      if (k == 0) {
+        res.add(target.val);
+        return res;
+      }
+      dfs(root, target, null);
+      collect(target, k);
+      collect(targetFather, k - 1);
+      return res;
+    }
+
+    public boolean dfs(TreeNode root, TreeNode target, TreeNode father) {
+      if (root == null) {
+        return false;
+      }
+      if (root == target) {
+        targetFather = father;
+        return true;
+      }
+      if (dfs(root.left, target, root)) {
+        root.left = father;
+        return true;
+      }
+      if (dfs(root.right, target, root)) {
+        root.right = father;
+        return true;
+      }
+      return false;
+    }
+
+    public void collect(TreeNode root, int k) {
+      if (root == null) {
+        return;
+      }
+      if (k == 0) {
+        res.add(root.val);
+      } else {
+        collect(root.left, k - 1);
+        collect(root.right, k - 1);
+      }
+    }
+  }
+
+//runtime:10 ms
+//memory:42.7 MB
