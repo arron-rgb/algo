@@ -73,7 +73,31 @@ public class CombinationSumII {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-      return null;
+      List<List<Integer>> res = new ArrayList<>();
+      Arrays.sort(candidates);
+      dfs(res, new ArrayList<>(), candidates, target, 0);
+      return res;
+    }
+
+    void dfs(List<List<Integer>> res, List<Integer> tmp, int[] nums, int target, int start) {
+      if (target == 0) {
+        res.add(new ArrayList<>(tmp));
+        return;
+      }
+
+      for (int i = start; i < nums.length; i++) {
+        int num = nums[i];
+        // 跳过一样的数
+        if (i > start && num == nums[i - 1]) {
+          continue;
+        }
+        if (num > target) {
+          break;
+        }
+        tmp.add(num);
+        dfs(res, tmp, nums, target - num, i + 1);
+        tmp.remove(tmp.size() - 1);
+      }
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

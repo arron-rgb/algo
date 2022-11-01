@@ -77,11 +77,38 @@ public class CombinationSum {
     }
   }
 
-  // todo
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-      return null;
+      List<List<Integer>> res = new ArrayList<>();
+      Arrays.sort(candidates);
+      dfs(res, new ArrayList<>(), candidates, target, 0);
+      return res;
+    }
+
+    /**
+     * @param res
+     * @param tmp
+     * @param nums
+     * @param target
+     * @param start
+     *          从数组的某个位置开始寻找，避免[2,2,3], [2,3,2]重复
+     */
+    void dfs(List<List<Integer>> res, List<Integer> tmp, int[] nums, int target, int start) {
+      if (target == 0) {
+        res.add(new ArrayList<>(tmp));
+        return;
+      }
+      for (int i = start; i < nums.length; i++) {
+        int num = nums[i];
+        // 后面必不可能出现符合条件的组合
+        if (target < num) {
+          break;
+        }
+        tmp.add(num);
+        dfs(res, tmp, nums, target - num, i);
+        tmp.remove(tmp.size() - 1);
+      }
     }
   }
   // leetcode submit region end(Prohibit modification and deletion)

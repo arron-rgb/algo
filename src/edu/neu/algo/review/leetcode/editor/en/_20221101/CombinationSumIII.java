@@ -80,13 +80,31 @@ public class CombinationSumIII {
     }
   }
 
-  // todo
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public List<List<Integer>> combinationSum3(int k, int n) {
-      return null;
+      List<List<Integer>> res = new ArrayList<>();
+      dfs(res, new ArrayList<>(), n, k, 1);
+      return res;
+    }
+
+    void dfs(List<List<Integer>> res, List<Integer> tmp, int target, int k, int start) {
+      if (tmp.size() == k) {
+        if (target == 0) {
+          res.add(new ArrayList<>(tmp));
+        }
+        return;
+      }
+      for (int i = start; i < 10; i++) {
+        if (target < i) {
+          continue;
+        }
+        tmp.add(i);
+        dfs(res, tmp, target - i, k, i + 1);
+        tmp.remove(tmp.size() - 1);
+      }
     }
   }
-  // leetcode submit region end(Prohibit modification and deletion)
 
+  // leetcode submit region end(Prohibit modification and deletion)
 }
