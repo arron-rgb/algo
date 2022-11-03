@@ -15,13 +15,14 @@
 #164 Maximum Gap
 #60 Permutation Sequence
 
+1293 Demolition of Robot
 
-1293  Demolition of Robot
 973. K Closest Points to Origin
-937   Reorder Data in Log Files
-2281   Sum of Total Strength of Wizards
-2262   Total Appeal of A String
-2214   Minimum Health to Beat Game
-2195   Append K Integers With Minimal Sum
-2221  Find Triangular Sum of an Array
-2272  ubstring With Largest Variance
+     937 Reorder Data in Log Files
+     2281 Sum of Total Strength of Wizards
+     2262 Total Appeal of A String
+     2214 Minimum Health to Beat Game
+     2195 Append K Integers With Minimal Sum
+     2221 Find Triangular Sum of an Array
+     2272 ubstring With Largest Variance
+

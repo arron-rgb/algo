@@ -76,9 +76,10 @@ public class CombinationSumIV {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int combinationSum4(int[] nums, int target) {
-      int[] dp = new int[target + 1];
+      int len = target + 1;
+      int[] dp = new int[len];
       dp[0] = 1;
-      for (int i = 1; i < target + 1; i++) {
+      for (int i = 1; i < len; i++) {
         for (int num : nums) {
           if (i - num >= 0) {
             dp[i] += dp[i - num];

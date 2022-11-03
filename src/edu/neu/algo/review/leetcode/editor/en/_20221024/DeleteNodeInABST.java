@@ -83,9 +83,8 @@ public class DeleteNodeInABST {
       System.out.println(q);
     }
   }
-  // todo
-  // leetcode submit region begin(Prohibit modification and deletion)
 
+  // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public TreeNode deleteNode(TreeNode root, int key) {
       if (root == null) {
