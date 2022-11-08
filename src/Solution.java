@@ -7,8 +7,9 @@ import java.util.*;
 
 /** * @author arronshentu */
 public class Solution {
+
   public static void main(String[] args) {
-    System.out.println(ChronoUnit.DAYS.between(LocalDate.of(2022, 12, 17), LocalDate.now()));
+    Solution solution = new Solution();
   }
 
 }

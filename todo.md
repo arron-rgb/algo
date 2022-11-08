@@ -26,3 +26,6 @@
      2221 Find Triangular Sum of an Array
      2272 ubstring With Largest Variance
 
+树状数组
+线段树
+DP
