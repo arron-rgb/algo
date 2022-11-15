@@ -129,7 +129,7 @@ public class InputUtil {
   public static String[] stringToStringArray(String s) {
     s = process(s, "[", 1);
     String[] split = s.split(",");
-    return Arrays.stream(split).map(t -> t.replaceAll("\"", "")).toList().toArray(new String[0]);
+    return Arrays.stream(split).map(t -> t.replaceAll("\"", "").trim()).toList().toArray(new String[0]);
   }
 
   public static char[][] stringToCharArrays(String s) {

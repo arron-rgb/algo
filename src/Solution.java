@@ -10,9 +10,8 @@ public class Solution {
 
   public static void main(String[] args) {
     Solution solution = new Solution();
-    // [3,6,1,3,4]
-    // [2,1,3,4,5]
-    // 25
+    System.out.println(ChronoUnit.DAYS.between(LocalDate.of(2022, 12, 17), LocalDate.now()));
+
   }
 
 }

@@ -96,4 +96,16 @@ public class BinarySubarraysWithSum {
   }
   // leetcode submit region end(Prohibit modification and deletion)
 
+  public int removeDuplicates(int[] nums) {
+    int i = 0;
+    int n = nums.length;
+    while (i < n) {
+      int j = i;
+      while (j < n && nums[j] == nums[i]) {
+        j++;
+      }
+      nums[i++] = nums[j];
+    }
+    return i;
+  }
 }
