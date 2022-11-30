@@ -14,6 +14,66 @@ import java.util.*;
  */
 public class Weekly {
 
+  public int backPackIII(int[] sizes, int[] values, int m) {
+    int n = sizes.length;
+    int[] f = new int[m + 1];
+    for (int i = 0; i < n; ++i) {
+      for (int k = 1; k * sizes[i] <= m; ++k) {
+        for (int j = m; j >= sizes[i]; --j) {
+          f[j] = Math.max(f[j], f[j - sizes[i]] + values[i]);
+        }
+      }
+    }
+    return f[m];
+  }
+
+  int sec() {
+    int res = 0;
+    Scanner kb = new Scanner(System.in);
+    int n = kb.nextInt();
+    List<int[]> list = new ArrayList<>();
+    for (int i = 0; i < n; i++) {
+      list.add(new int[] {kb.nextInt(), 1});
+      list.add(new int[] {kb.nextInt(), -1});
+    }
+    list.sort((o1, o2) -> {
+      if (o1[0] == o2[0]) {
+        return o2[1] - o1[1];
+      }
+      return o1[0] - o2[0];
+    });
+    int pre = 0, preState = 0;
+    for (int[] ints : list) {
+    }
+    return res;
+  }
+
+  int backpack() {
+    int res = 0;
+    Scanner kb = new Scanner(System.in);
+    int n = kb.nextInt();
+    int m = kb.nextInt();
+    int[] nums = new int[] {10, 30, 50};
+    // 共三种面值
+    // 一共可使用n次
+    // 问有多少种方案能凑出m
+    int[][] dp = new int[m + 1][n + 1];
+    // dp[i][j]: 表示共j张k，和为i
+    // dp[i + num][j + 1] += dp[i][j]
+    Arrays.fill(dp[0], 1);
+    for (int i = 0; i <= m; i++) {
+      for (int num : nums) {
+        if (i + num <= m) {
+          for (int j = 0; j <= n - 1; j++) {
+            dp[i + num][j + 1] += dp[i][j];
+          }
+        }
+      }
+    }
+    System.out.println(Arrays.deepToString(dp));
+    return dp[m][n];
+  }
+
   public static void main(String[] args) throws IOException {
     Weekly solution = new Weekly();
     // i <= j, nums[i] + nums[j] 完全平方数
@@ -22,10 +82,12 @@ public class Weekly {
     // 1, 24
     // 1, 15
     // 18, 18
-    int[] nums = {-1, 18, 1, 15, 24, 26};
-    int solution1 = solution.solution(nums);
-    System.out.println(solution1);
-    System.out.println(solution.solution2(nums));
+    int backpack = solution.backpack();
+    System.out.println(backpack);
+    // int[] nums = {-1, 18, 1, 15, 24, 26};
+    // int solution1 = solution.solution(nums);
+    // System.out.println(solution1);
+    // System.out.println(solution.solution2(nums));
     // DoesNotSumToFortyTwoCaseInsensitive
     // String[] data = """
     // """.trim().replaceAll("\n", "|").split("\\|");
