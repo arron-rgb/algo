@@ -73,7 +73,8 @@ public class BinarySubarraysWithSum {
         prefix += num;
         int target = prefix - goal;
         res += map.getOrDefault(target, 0);
-
+        // prefix == target : goal is zero
+        // should plus the previous count
         map.put(prefix, map.getOrDefault(prefix, 0) + 1);
       }
       // 1 + 2 + 3 + 4 + 5

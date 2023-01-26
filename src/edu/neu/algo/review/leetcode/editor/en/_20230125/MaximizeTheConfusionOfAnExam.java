@@ -99,12 +99,17 @@ public class MaximizeTheConfusionOfAnExam {
     public int maxConsecutiveChar(String answerKey, int k, char ch) {
       int n = answerKey.length();
       int ans = 0;
-      for (int left = 0, right = 0, sum = 0; right < n; right++) {
+      int left = 0, right = 0, sum = 0;
+      while (right < n) {
         sum += answerKey.charAt(right) != ch ? 1 : 0;
         while (sum > k) {
           sum -= answerKey.charAt(left++) != ch ? 1 : 0;
         }
+        // 每一个循环停止的状态都是 sum = k
+        // 并且符合最大连续的条件
+        // 所以只需要对each character 求一次max length就可以
         ans = Math.max(ans, right - left + 1);
+        right++;
       }
       return ans;
     }

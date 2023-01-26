@@ -1,0 +1,29 @@
+  class Solution {
+    public long countGood(int[] nums, int k) {
+      long res = 0;
+      int n = nums.length;
+      int left = 0, right = 0;
+      int pairs = 0;
+      Map<Integer, Integer> map = new HashMap<>();
+      while (right < n) {
+        map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+        // map[nums[right]]起码为1，所以pairs不会为0
+        pairs += map.get(nums[right]) - 1;
+        while (pairs >= k) {
+          // 只要当前满足条件
+          // 那么加上后面未被算进subarray的数也可以
+          // 所以加上 n - right
+          res += n - right;
+          pairs -= map.get(nums[left]) - 1;
+          map.put(nums[left], map.get(nums[left]) - 1);
+          left++;
+        }
+        right++;
+      }
+      return res;
+    }
+
+  }
+
+//runtime:66 ms
+//memory:52.5 MB

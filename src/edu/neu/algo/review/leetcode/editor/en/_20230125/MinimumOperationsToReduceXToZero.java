@@ -85,6 +85,8 @@ public class MinimumOperationsToReduceXToZero {
       }
       int ans = Integer.MIN_VALUE;
       int left = 0, right = 0, tmp = 0;
+      // 找一个subarray sum为 sum - x
+      // 求最大长度
       int target = sum - x;
       while (right < n) {
         tmp += nums[right];

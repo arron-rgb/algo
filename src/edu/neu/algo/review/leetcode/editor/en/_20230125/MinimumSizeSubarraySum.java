@@ -78,19 +78,16 @@ public class MinimumSizeSubarraySum {
   // leetcode submit region begin(Prohibit modification and deletion)
   class Solution {
     public int minSubArrayLen(int target, int[] nums) {
-      int left = 0;
+      int left = 0, right = 0, sum = 0;
       int res = Integer.MAX_VALUE;
       int n = nums.length;
-      int right = 0;
-      int sum = 0;
+      // 求一个 sum >= target的subarray
       while (right < n) {
         sum += nums[right];
-        while (sum - nums[left] >= target) {
+        while (sum >= target) {
+          res = Math.min(res, right - left + 1);
           sum -= nums[left];
           left++;
-        }
-        if (sum >= target) {
-          res = Math.min(right - left + 1, res);
         }
         right++;
       }
@@ -99,5 +96,8 @@ public class MinimumSizeSubarraySum {
   }
 
   // leetcode submit region end(Prohibit modification and deletion)
+
+  // runtime:1 ms
+  // memory:49.9 MB
 
 }
