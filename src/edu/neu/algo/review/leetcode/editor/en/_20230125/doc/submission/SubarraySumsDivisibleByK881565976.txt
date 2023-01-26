@@ -1,0 +1,22 @@
+  class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+      int res = 0;
+      int[] count = new int[k];
+      count[0] = 1;
+      int sum = 0;
+      for (int num : nums) {
+        // +k 防止 sum + num%k为负数
+        // count[0]=1 防止
+        sum = (sum + num % k + k) % k;
+        // num为5的时候 通过计算[4,5] - [4]发现有个差值为5 % k == 0
+        // 所以需要统计 count[sum]的个数
+
+        // 但count[0]是为了避免 num%k==0的时候错过
+        res += count[sum]++;
+      }
+      return res;
+    }
+  }
+
+//runtime:4 ms
+//memory:46 MB

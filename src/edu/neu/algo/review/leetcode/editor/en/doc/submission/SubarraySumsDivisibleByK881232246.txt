@@ -1,0 +1,15 @@
+  class Solution {
+    public int subarraysDivByK(int[] nums, int k) {
+      int[] count = new int[k];
+      count[0] = 1;
+      int prefix = 0, res = 0;
+      // 每次碰到一个余数 就是它与旧的能够组成的子数组的数量
+      for (int n : nums) {
+        prefix = (prefix + n % k + k) % k;
+        res = res + count[prefix]++;
+      }
+      return res;
+    }
+  }
+//runtime:4 ms
+//memory:46.4 MB

@@ -1,84 +1,49 @@
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-
-/**
- * @author arronshentu
- */
 public class Solution {
-
   public static void main(String[] args) {
     Solution solution = new Solution();
-    System.out.println(ChronoUnit.DAYS.between(LocalDate.of(2022, 12, 17), LocalDate.now()));
-
+    solution.countAnagrams("too hot");
   }
 
-  public int minimizeTheDifference(int[][] mat, int target) {
-
-    int m = mat.length;
-    int n = mat[0].length;
-
-    int max = 4905;
-    boolean[][] dp = new boolean[n][max];
-    int res = Integer.MAX_VALUE;
-
-    for (int i = 0; i < n; i++) {
-      dp[0][mat[0][i]] = true;
+  public int countAnagrams(String s) {
+    int mod = 1000000007;
+    long[] fact = new long[s.length() + 1];
+    long[] inv = new long[s.length() + 1];
+    fact[0] = 1;
+    inv[0] = 1;
+    for (int i = 1; i <= s.length(); i++) {
+      fact[i] = fact[i - 1] * i % mod;
+      inv[i] = inv((int)fact[i], mod);
     }
-
-    for (int i = 1; i < n; i++) {
-      for (int j = 1; j < max; j++) {
-        for (int k = 0; k < n; k++) {
-          if (j - mat[i][k] >= 0 && dp[i - 1][j - mat[i][k]]) {
-            dp[i][j] = true;
-            break;
-          }
-        }
+    long res = 1;
+    for (String t : s.split(" ")) {
+      int[] freq = new int[26];
+      for (char c : t.toCharArray()) {
+        freq[c - 'a']++;
       }
+      long r = fact[t.length()];
+      for (int i : freq) {
+        r *= inv[i];
+        r %= mod;
+      }
+      res *= r;
+      res %= mod;
     }
+    return (int)res;
+  }
 
-    for (int i = 0; i < n; i++) {
-      if (dp[m - 1][i])
-        res = Math.min(res, Math.abs(i - target));
+  public int inv(int n, int m) {
+    return pow(n, m - 2, m);
+  }
+
+  public int pow(int n, int p, int mod) {
+    int res = 1, pow = n;
+    while (p > 0) {
+      if (p % 2 == 1) {
+        res = (int)((long)res * pow % mod);
+      }
+      pow = (int)((long)pow * pow % mod);
+      p >>= 1;
     }
     return res;
   }
-
-  class FreqStack {
-
-    Map<Integer, Deque<Integer>> stack;
-    Map<Integer, Integer> count;
-    Deque<Integer> empty = new ArrayDeque<>();
-
-    public FreqStack() {
-      stack = new HashMap<>();
-      count = new HashMap<>();
-    }
-
-    public void push(int val) {
-      int old = count.getOrDefault(val, 0);
-      if (stack.getOrDefault(old, empty).contains(val)) {
-        stack.get(old).remove(val);
-      }
-      stack.computeIfAbsent(old + 1, t -> new ArrayDeque<>()).addFirst(val);
-      count.put(val, count.getOrDefault(val, 0) + 1);
-    }
-
-    public int pop() {
-      List<Integer> keys = new ArrayList<>(stack.keySet());
-      Collections.sort(keys);
-      int n = keys.size();
-      int val = stack.get(keys.get(n - 1)).pollFirst();
-      if (stack.get(keys.get(n - 1)).isEmpty()) {
-        stack.remove(keys.get(n - 1));
-      }
-      int value = count.getOrDefault(val, 0) - 1;
-      count.put(val, value);
-      if (value == 0) {
-        count.remove(val);
-      }
-      return val;
-    }
-  }
-
 }
