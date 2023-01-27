@@ -1,0 +1,40 @@
+  class Solution {
+    Map<Character, List<Character>> map = new HashMap<>() {
+      {
+        put('2', Arrays.asList('a', 'b', 'c'));
+        put('3', Arrays.asList('d', 'e', 'f'));
+        put('4', Arrays.asList('g', 'h', 'i'));
+        put('5', Arrays.asList('j', 'k', 'l'));
+        put('6', Arrays.asList('m', 'n', 'o'));
+        put('7', Arrays.asList('p', 'q', 'r', 's'));
+        put('8', Arrays.asList('t', 'u', 'v'));
+        put('9', Arrays.asList('w', 'x', 'y', 'z'));
+      }
+    };
+    List<String> res;
+
+    public List<String> letterCombinations(String digits) {
+      if (digits.isEmpty()) {
+        return new ArrayList<>();
+      }
+      res = new ArrayList<>();
+      dfs(digits, 0, new StringBuilder());
+      return res;
+    }
+
+    void dfs(String digits, int index, StringBuilder tmp) {
+      if (index == digits.length()) {
+        res.add(tmp.toString());
+        return;
+      }
+      char c = digits.charAt(index);
+      for (Character character : map.get(c)) {
+        tmp.append(character);
+        dfs(digits, index + 1, tmp);
+        tmp.deleteCharAt(tmp.length() - 1);
+      }
+    }
+  }
+
+//runtime:2 ms
+//memory:42.4 MB

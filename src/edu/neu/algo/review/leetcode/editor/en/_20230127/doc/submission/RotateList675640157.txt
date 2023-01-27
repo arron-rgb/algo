@@ -1,0 +1,26 @@
+
+  class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+      if (head == null) {
+        return null;
+      }
+      ListNode fast = head;
+      ListNode slow = head;
+      int len = 1;
+      while (fast.next != null) {
+        fast = fast.next;
+        len++;
+      }
+      fast.next = head;
+      k = k % len;
+      for (int i = 0; i < len - k - 1; i++) {
+        slow = slow.next;
+      }
+      ListNode newHead = slow.next;
+      slow.next = null;
+      return newHead;
+    }
+  }
+
+//runtime:0 ms
+//memory:41.8 MB

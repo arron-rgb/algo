@@ -1,0 +1,57 @@
+  class MapSum {
+    Trie root;
+    Map<String, Integer> map;
+
+    public MapSum() {
+      root = new Trie();
+      map = new HashMap<>();
+    }
+
+    public void insert(String key, int val) {
+      int delta = val - map.getOrDefault(key, 0);
+      map.put(key, val);
+      root.insert(key, delta);
+    }
+
+    public int sum(String prefix) {
+      return root.sum(prefix);
+    }
+  }
+
+  class Trie {
+    Trie[] children;
+    boolean isEnd;
+    int val;
+
+    void insert(String s, int v) {
+      int n = s.length();
+      Trie root = this;
+      for (int i = 0; i < n; i++) {
+        if (root.children == null) {
+          root.children = new Trie[26];
+        }
+        int index = s.charAt(i) - 'a';
+        if (root.children[index] == null) {
+          root.children[index] = new Trie();
+        }
+        root.children[index].val += v;
+        root = root.children[index];
+      }
+      root.isEnd = true;
+    }
+
+    int sum(String s) {
+      int n = s.length();
+      Trie root = this;
+      for (int i = 0; i < n; i++) {
+        int index = s.charAt(i) - 'a';
+        if (root == null || root.children == null || root.children[index] == null ) {
+          return 0;
+        }
+        root = root.children[index];
+      }
+      return root.val;
+    }
+  }
+//runtime:12 ms
+//memory:42.2 MB
