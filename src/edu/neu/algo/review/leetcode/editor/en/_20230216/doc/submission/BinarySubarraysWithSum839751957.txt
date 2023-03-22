@@ -1,0 +1,19 @@
+class Solution {
+    public int numSubarraysWithSum(int[] A, int S) {
+        if (A == null || A.length == 0) return 0;
+        // key: prefix sum value, value: count of key that have been seen so far
+        Map<Integer, Integer> counter = new HashMap<>();
+        int sum = 0;
+        int ans = 0;
+        counter.put(0, 1);  // don't forget this trivial case
+        for (int i = 0; i < A.length; i++) {
+            sum += A[i];
+            int target = sum - S;
+            ans += counter.getOrDefault(target, 0);
+            counter.put(sum, counter.getOrDefault(sum, 0) + 1);
+        }
+        return ans;
+    }
+}
+//runtime:18 ms
+//memory:47.5 MB

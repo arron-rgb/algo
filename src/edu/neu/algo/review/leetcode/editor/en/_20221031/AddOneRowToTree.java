@@ -6,76 +6,33 @@ import edu.neu.base.TreeNode;
 import edu.neu.util.InputUtil;
 
 public class AddOneRowToTree {
-  // 623
-  // Given the root of a binary tree and two integers val and depth, add a row of
-  // nodes with value val at the given depth depth.
-  //
-  // Note that the root node is at depth 1.
-  //
-  // The adding rule is:
-  //
-  //
-  // Given the integer depth, for each not null tree node cur at the depth depth -
-  // 1, create two tree nodes with value val as cur's left subtree root and right
-  // subtree root.
-  // cur's original left subtree should be the left subtree of the new left
-  // subtree root.
-  // cur's original right subtree should be the right subtree of the new right
-  // subtree root.
-  // If depth == 1 that means there is no depth depth - 1 at all, then create a
-  // tree node with value val as the new root of the whole original tree, and the
-  // original tree is the new root's left subtree.
-  //
-  //
-  //
-  // Example 1:
-  //
-  //
-  // Input: root = [4,2,6,3,1,5], val = 1, depth = 2
-  // Output: [4,1,1,2,null,null,6,3,1,5]
-  //
-  //
-  // Example 2:
-  //
-  //
-  // Input: root = [4,2,null,3,1], val = 1, depth = 3
-  // Output: [4,2,null,1,1,3,null,null,1]
-  //
-  //
-  //
-  // Constraints:
-  //
-  //
-  // The number of nodes in the tree is in the range [1, 10⁴].
-  // The depth of the tree is in the range [1, 10⁴].
-  // -100 <= Node.val <= 100
-  // -10⁵ <= val <= 10⁵
-  // 1 <= depth <= the depth of tree + 1
-  //
-  // Related Topics Tree Depth-First Search Breadth-First Search Binary Tree 👍 25
-  // 95 👎 221
 
   public static void main(String[] args) {
-    Solution solution = new AddOneRowToTree().new Solution();
-    String[] data = """
-          [4,2,6,3,1,5]
-      1
-      2
-      [4,2,null,3,1]
-      1
-      3
-          """.trim().replaceAll("\n", "|").split("\\|");
-    String[] paramTypes = InputUtil.param("[TreeNode, int, int]");
-    Object[] params = new Object[data.length];
-    for (int i = 0; i < data.length; i++) {
-      params[i] = InputUtil.get(data[i], paramTypes[i % paramTypes.length]);
+    AddOneRowToTree addOneRowToTree = new AddOneRowToTree();
+    int i = addOneRowToTree.monkeyMove(500000003);
+    System.out.println(i);
+    System.out.println(addOneRowToTree.monkeyMove(55));
+  }
+
+  public int monkeyMove(int n) {
+    int res = p(2, n, (int)1e9 + 7);
+    return res - 2;
+  }
+
+  int p(long x, long y, int p) {
+    long res = 1;
+    x = x % p;
+    if (x == 0) {
+      return 0;
     }
-    int loop = data.length / paramTypes.length;
-    for (int i = 0; i < loop; i++) {
-      TreeNode q = solution.addOneRow((TreeNode)params[1 + i * paramTypes.length - 1],
-        (int)params[2 + i * paramTypes.length - 1], (int)params[3 + i * paramTypes.length - 1]);
-      System.out.println(q);
+    while (y > 0) {
+      if ((y & 1) == 1) {
+        res = (res * x) % p;
+        y >>= 1;
+        x = (x * x) % p;
+      }
     }
+    return (int)res;
   }
 
   // leetcode submit region begin(Prohibit modification and deletion)

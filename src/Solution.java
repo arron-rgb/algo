@@ -1,7 +1,29 @@
 public class Solution {
   public static void main(String[] args) {
-    Solution solution = new Solution();
-    solution.countAnagrams("too hot");
+    // Solution solution = new Solution();
+    // solution.countAnagrams("too hot");
+    int c = 0;
+    for (int i = 1; i <= 7; i++) {
+      for (int j = 1; j <= 7; j++) {
+        for (int k = 1; k <= 7; k++) {
+          if (i < j && j < k) {
+            c++;
+          }
+        }
+      }
+    }
+    System.out.println(c + "/" + 7 * 7 * 7);
+    c = 0;
+    for (int i = 1; i <= 7; i++) {
+      for (int j = 1; j <= 7; j++) {
+        for (int k = 1; k <= 7; k++) {
+          if (i <= j && j <= k) {
+            c++;
+          }
+        }
+      }
+    }
+    System.out.println(c + "/" + 7 * 7 * 7);
   }
 
   public int countAnagrams(String s) {

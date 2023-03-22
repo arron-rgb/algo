@@ -1,0 +1,26 @@
+class Solution {
+  
+    List<List<Integer>> res;
+  
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+      res = new ArrayList<>();
+      dfs(new ArrayList<>(), 0, nums);
+      return res;
+    }
+  
+  void dfs(List<Integer> tmp, int index, int[] nums){
+    if(index == nums.length){
+      res.add(new ArrayList(tmp));
+      return;
+    }
+        int i = index;
+        while(i < nums.length && nums[i] == nums[index]) i++;
+    dfs(tmp, i, nums);
+    tmp.add(nums[index]);
+    dfs(tmp, index+1, nums);
+    tmp.remove(tmp.size()-1);
+  }
+}
+//runtime:1 ms
+//memory:42.3 MB

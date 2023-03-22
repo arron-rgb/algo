@@ -1,0 +1,23 @@
+class Solution {
+    public int totalFruit(int[] fruits) {
+      Map<Integer, Integer> b = new HashMap<>();
+      int left=0,right=0;
+      int n = fruits.length;
+    
+      while(right < n){
+        b.put(fruits[right], b.getOrDefault(fruits[right], 0) + 1);
+        
+        if(b.size() > 2){
+          b.put(fruits[left], b.get(fruits[left]) - 1);
+          if(b.get(fruits[left]) == 0){
+            b.remove(fruits[left]);
+          }
+          left++;
+        }
+        right++;
+      }
+      return right - left;
+    }
+}
+//runtime:92 ms
+//memory:108.6 MB

@@ -1,0 +1,47 @@
+class Allocator {
+
+    TreeSet<Integer> set;
+    int[] arr;
+    public Allocator(int n) {
+        arr = new int[n];
+        set = new TreeSet<>();
+    }
+    
+    public int allocate(int size, int mID) {
+        for(int i = 0;i <= arr.length - size;i++){
+            if(arr[i] != 0) continue;
+            
+            Integer next = set.ceiling(i);
+            
+            if(next == null || next - i >= size){
+                set.add(i);
+                for(int j = i;j < i + size;j++){
+                    arr[j] = mID;
+                }
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public int free(int mID) {
+        int ans = 0;
+        for(int i = 0;i < arr.length;i++){
+            if(arr[i] == mID){
+                arr[i] = 0;
+                set.remove(i);
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+
+/**
+ * Your Allocator object will be instantiated and called as such:
+ * Allocator obj = new Allocator(n);
+ * int param_1 = obj.allocate(size,mID);
+ * int param_2 = obj.free(mID);
+ */
+//runtime:100 ms
+//memory:45.1 MB

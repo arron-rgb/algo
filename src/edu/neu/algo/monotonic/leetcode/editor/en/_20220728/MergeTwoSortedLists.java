@@ -47,6 +47,7 @@ public class MergeTwoSortedLists {
   // Related Topics Linked List Recursion 👍 13675 👎 1235
 
   public static void main(String[] args) {
+
     Solution solution = new MergeTwoSortedLists().new Solution();
     String[] data = """
           [1,2,4]

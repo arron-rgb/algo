@@ -1,0 +1,45 @@
+  class Solution {
+    public int[] getOrder(int[][] tasks) {
+      int n = tasks.length;
+
+      List<Integer> idx = new ArrayList<>();
+      for (int i = 0; i < n; i++)
+        idx.add(i);
+      idx.sort(Comparator.comparingInt(o -> tasks[o][0]));
+
+      Queue<int[]> heap = new PriorityQueue<>((o1, o2) -> {
+        // cpu取task的策略：1. 创建早 2. 耗时短
+        // heap里放processingTime和idx
+        // processingTime小/ id小优先
+        if (o1[0] != o2[0])
+          return Integer.compare(o1[0], o2[0]);
+        return Integer.compare(o1[1], o2[1]);
+      });
+      // 先按startTime排序
+      // 然后再在堆中取
+      int[] res = new int[n];
+      int k = 0, time = 0;
+      // k是已入队的task数量
+
+      // i拿来填充res数组
+      for (int i = 0; i < n; i++) {
+        if (heap.isEmpty())
+          time = Math.max(time, tasks[idx.get(k)][0]);
+        // 只要k < n并且 第k个耗费时间短的task的入队时间 <= time
+        // 就把它放入队列
+        while (k < n && tasks[idx.get(k)][0] <= time) {
+          heap.offer(new int[] {tasks[idx.get(k)][1], idx.get(k)});
+          k++;
+        }
+
+        int[] t = heap.poll();
+        time += t[0];
+        res[i] = t[1];
+      }
+
+      return res;
+    }
+  }
+
+//runtime:150 ms
+//memory:95.3 MB

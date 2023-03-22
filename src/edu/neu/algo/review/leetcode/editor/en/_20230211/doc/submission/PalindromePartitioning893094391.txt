@@ -1,0 +1,38 @@
+  class Solution {
+    List<List<String>> res;
+
+    public List<List<String>> partition(String s) {
+      res = new ArrayList<>();
+      dfs(new ArrayList<>(), s, 0);
+      return res;
+    }
+
+    void dfs(List<String> tmp, String s, int index) {
+      if (index == s.length()) {
+        res.add(new ArrayList<>(tmp));
+        return;
+      }
+      for (int i = index; i < s.length(); i++) {
+        if (check(s, index, i)) {
+          tmp.add(s.substring(index, i + 1));
+          dfs(tmp, s, i + 1);
+          tmp.remove(tmp.size() - 1);
+        }
+      }
+    }
+
+    boolean check(String s, int left, int right) {
+      while (left < right) {
+        if (s.charAt(left) != s.charAt(right)) {
+          return false;
+        }
+        left++;
+        right--;
+      }
+      return true;
+    }
+  }
+
+
+//runtime:9 ms
+//memory:54.7 MB

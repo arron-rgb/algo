@@ -1,0 +1,31 @@
+  class Solution {
+    public String simplifyPath(String path) {
+      String[] split = path.split("/");
+      Deque<String> deque = new ArrayDeque<>();
+      for (String s : split) {
+        switch (s) {
+          case "..":
+            if (!deque.isEmpty()) {
+              deque.removeLast();
+            }
+          case ".":
+            continue;
+          case "":
+            continue;
+          default:
+            deque.add(s);
+        }
+      }
+      if (deque.isEmpty()) {
+        return "/";
+      }
+      StringBuilder res = new StringBuilder("/");
+      for (String s : deque) {
+        res.append(s).append("/");
+      }
+      return res.substring(0, res.length() - 1);
+    }
+  }
+
+//runtime:6 ms
+//memory:44.4 MB

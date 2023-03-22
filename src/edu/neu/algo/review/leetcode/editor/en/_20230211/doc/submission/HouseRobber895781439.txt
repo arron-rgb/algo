@@ -1,0 +1,31 @@
+  class Solution {
+    int[] cache;
+
+    public int rob(int[] nums) {
+      // 当前操作: 第i个房子选还是不选
+      cache = new int[105];
+      Arrays.fill(cache, -1);
+      // 子问题: 前i-1个房子选还是不选
+      // 不选: 前i-1的max 选: 前i-2的max+当前
+      return dfs(nums, nums.length - 1);
+    }
+
+    int dfs(int[] nums, int i) {
+      if (cache[i] != -1) {
+        return cache[i];
+      }
+      if (i == 0) {
+        cache[i] = nums[0];
+        return cache[i];
+      }
+      if (i == 1) {
+        cache[i] = Math.max(nums[0], nums[1]);
+        return cache[i];
+      }
+      cache[i] = Math.max(dfs(nums, i - 1), dfs(nums, i - 2) + nums[i]);
+      return cache[i];
+    }
+  }
+
+//runtime:0 ms
+//memory:39.8 MB

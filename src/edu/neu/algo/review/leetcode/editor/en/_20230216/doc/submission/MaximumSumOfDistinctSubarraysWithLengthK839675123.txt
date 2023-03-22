@@ -1,0 +1,35 @@
+class Solution {
+  public long maximumSubarraySum(int[] nums, int k) {
+    int max = -1;
+    for(int i: nums){
+      max = Math.max(i, max);
+    }
+    int[] freq = new int[max+1];
+    int n = nums.length;
+    long sum = 0;
+    long res = 0;
+    int count = 0;
+    int left=0,right=0;
+    for(;right<n;right++){
+      if(freq[nums[right]]++ == 0){
+        count++;
+      }
+      sum += nums[right];
+      if(right >= k-1){
+        if(count == k){
+          res = Math.max(res, sum);
+        }
+        // 注意一下为什么count--需要加个if判断
+        if(--freq[nums[left]] == 0){
+          count--;
+        }
+        sum -= nums[left];
+        left++;
+      }
+      
+    }
+    return res;
+  }
+}
+//runtime:7 ms
+//memory:73.9 MB
