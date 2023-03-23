@@ -14,50 +14,8 @@ import java.util.*;
  */
 public class Weekly {
 
-  class Solution {
-    public int maxNumOfMarkedIndices(int[] nums) {
-      int n = nums.length;
-      int res = 0;
-      Arrays.sort(nums);
-      TreeMap<Integer, Integer> map = new TreeMap<>();
-      for (int num : nums) {
-        map.put(num, map.getOrDefault(num, 0) + 1);
-      }
-
-      for (int i = n - 1; i >= 0 && res < n; i--) {
-        int k = nums[i];
-        Integer v = map.get(k);
-        if (v == null) {
-          continue;
-        }
-        Map.Entry<Integer, Integer> entry = map.floorEntry(nums[i] / 2);
-        if (entry == null) {
-          continue;
-        }
-        if (entry.getValue() > 1) {
-          map.put(entry.getKey(), entry.getValue() - 1);
-        } else {
-          map.remove(entry.getKey());
-        }
-        if (v > 1) {
-          map.put(nums[i], v - 1);
-        } else {
-          map.remove(nums[i]);
-        }
-        res += 2;
-      }
-      return res;
-    }
-
-  }
-
   public static void main(String[] args) throws IOException {
     Weekly solution = new Weekly();
-    Solution s = solution.new Solution();
-    int i = s.maxNumOfMarkedIndices(new int[] {1, 78, 27, 48, 14, 86, 79, 68, 77, 20, 57, 21, 18, 67, 5, 51, 70, 85, 47,
-      56, 22, 79, 41, 8, 39, 81, 59, 74, 14, 45, 49, 15, 10, 28, 16, 77, 22, 65, 8, 36, 79, 94, 44, 80, 72, 8, 96, 78,
-      39, 92, 69, 55, 9, 44, 26, 76, 40, 77, 16, 69, 40, 64, 12, 48, 66, 7, 59, 10});
-    System.out.println(i);
     // [9,2,5,4]
     // [7,6,8]
     // System.out.println(s.maxNumOfMarkedIndices(new int[] {3, 5, 2, 4}));
