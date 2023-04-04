@@ -6,6 +6,35 @@ import edu.neu.base.Node;
 
 public class Solution {
 
+  public static void main(String[] args) {
+
+    compare("abc", "pad");
+    compare("abc", "dcb");
+    compare("abc", "abcc");
+    compare("abc", "aabc");
+  }
+
+  private static void compare(String a, String b) {
+    int i = a.length() - 1;
+    int j = b.length() - 1;
+    while (i >= 0 && j >= 0) {
+      if (a.charAt(i) > b.charAt(j)) {
+        System.out.println(b);
+        return;
+      } else if (a.charAt(i) < b.charAt(j)) {
+        System.out.println(a);
+        return;
+      }
+      i--;
+      j--;
+    }
+    if (i >= 0) {
+      System.out.println(b);
+    } else {
+      System.out.println(a);
+    }
+  }
+
   public List<Integer> cheapestJump(int[] coins, int maxJump) {
     int[] next = new int[coins.length];
     Arrays.fill(next, -1);
