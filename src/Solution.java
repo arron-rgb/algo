@@ -1,29 +1,15 @@
+import java.util.List;
+
 public class Solution {
-  public static void main(String[] args) {
-    // Solution solution = new Solution();
-    // solution.countAnagrams("too hot");
-    int c = 0;
-    for (int i = 1; i <= 7; i++) {
-      for (int j = 1; j <= 7; j++) {
-        for (int k = 1; k <= 7; k++) {
-          if (i < j && j < k) {
-            c++;
-          }
-        }
-      }
-    }
-    System.out.println(c + "/" + 7 * 7 * 7);
-    c = 0;
-    for (int i = 1; i <= 7; i++) {
-      for (int j = 1; j <= 7; j++) {
-        for (int k = 1; k <= 7; k++) {
-          if (i <= j && j <= k) {
-            c++;
-          }
-        }
-      }
-    }
-    System.out.println(c + "/" + 7 * 7 * 7);
+  public List<Long> minOperations(int[] nums, int[] queries) {
+    // 把数组中的数变成 query
+    // 需要多少次操作
+
+    // 求 <=query 及 >= query的数
+    // 也是 count query
+
+    // 排序后二分就可以获得数量
+    return List.of();
   }
 
   public int countAnagrams(String s) {

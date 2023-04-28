@@ -1,35 +1,10 @@
-import edu.neu.util.InputUtil;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * @author arronshentu
  */
 public class Main6 {
+
   public static void main(String[] args) {
-    doTest();
-  }
-
-  private static void doTest() {
-    double l;
-    long start = System.currentTimeMillis();
-    for (int i = 0; i < 50; i++) {
-      fibImpl(i);
-    }
-    long end = System.currentTimeMillis();
-    System.out.println(end - start);
-  }
-
-  private static double fibImpl(int n) {
-    if (n == 0)
-      return 0.0d;
-    if (n == 1)
-      return 1d;
-    double d = fibImpl(n - 2) + fibImpl(n - 1);
-    if (Double.isInfinite(d))
-      throw new ArithmeticException("Overflow");
-    return d;
+    // "".lines()
   }
 
   private static int solution(int[] nums, int k) {
